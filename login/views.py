@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from . models import Login
 
-# Create your views here.
+def login(request):
+    if request.method == 'POST':
+        login = Login.POST()
