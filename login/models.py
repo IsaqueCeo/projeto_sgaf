@@ -7,7 +7,7 @@ class Usuario(AbstractUser):
     
     
 class PerfilAluno(models.Model):
-    matricula = models.CharField(max_length=20, unique=True)
+    matricula = models.CharField(max_length=20, unique=True, editable=False)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
     curso = models.CharField(max_length=100)
@@ -20,7 +20,7 @@ class PerfilAluno(models.Model):
 
 
 class PerfilFuncionario(models.Model):
-    matricula_funcionario = models.CharField(max_length=20, unique=True)
+    matricula_funcionario = models.CharField(max_length=20, unique=True, editable=False)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     departamento = models.CharField(max_length=100)
     cargo = models.CharField(max_length=100)
