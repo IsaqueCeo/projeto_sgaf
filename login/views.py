@@ -3,4 +3,10 @@ from . models import Login
 
 def login(request):
     if request.method == 'POST':
-        login = Login.POST()
+        form = LoginForm.POST()
+        if form.is_valid:
+            form.save()
+
+           
+
+        
