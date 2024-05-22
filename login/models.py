@@ -14,8 +14,25 @@ class PerfilAluno(models.Model):
     nome_responsavel = models.CharField(max_length=100)
     ano_ingresso = models.PositiveIntegerField()
 
-    def __str__(self):
-        return self.usuario.username
+    def gerar_matricula(self):
+        if len(self.turma) >= 2:
+            matricula = self.NIVEL[0][0] + self.turma[1]
+        else:
+            raise ValueError("A turma deve ter pelo menos 2 caracteres para gerar a matrícula.")
+        return matricula
+
+    def save(self, *args, **kwargs):
+        if not self.matricula:
+            while True:
+                matricula = self.gerar_matricula()
+                if not PerfilAluno.objects.filter(matricula=matricula).exists():
+                    self.matricula = matricula
+                    break
+        super().save(*args, **kwargs)
+    
+    
+    # def __str__(self):
+    #     return self.usuario.username
 
 
 
@@ -25,5 +42,25 @@ class PerfilFuncionario(models.Model):
     departamento = models.CharField(max_length=100)
     cargo = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.usuario.username
+    def gerar_matricula(self):
+        if len(self.departamento) >= 2:
+            matricula =self.NIVEL[0][0] + self.departamento[1]
+        else:
+            raise ValueError("O departamento deve ter pelo menos 2 caracteres para gerar a matrícula.")
+        return matricula
+
+    def save(self, *args, **kwargs):
+        if not self.matricula_funcionario:
+            while True:
+                matricula_funcionario = self.gerar_matricula()
+                if not PerfilFuncionario.objects.filter(matricula=matricula_funcionario).exists():
+                    self.matricula_funcionario = matricula_funcionario
+                    break
+
+        super().save(*args, **kwargs)
+
+
+
+
+class PerfilProfessor(models.Model):
+    matricula_professor = models.CharField(max_length=100, unique=True, editable=False)
