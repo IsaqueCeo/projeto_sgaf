@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'login',
     'core',
     'corsheaders',
+    'financeiro'
 ]
 
 MIDDLEWARE = [

@@ -15,8 +15,8 @@ class Aluno(models.Model):
     nome_responsavel = models.CharField(max_length=100)
     nome_social = models.CharField("Nome da Razão Social", max_length=100)
     ano_ingresso = models.DateTimeField(default=timezone.now().year)
-    data_nascimento = models.DateField(default=default_birth_date)
-    sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, default=MASCULINO)
+    # data_nascimento = models.DateField(default=default_birth_date)
+    # sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, default=MASCULINO)
     
 
     def gerar_matricula(self):
