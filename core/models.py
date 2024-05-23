@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 import random
 from django.utils import timezone
 from datetime import date
-from validate_docbr import CPF
+from validate_docbr import CPF, CNPJ
 from django.core.exceptions import ValidationError
 
 
@@ -123,6 +123,18 @@ class Empresa(models.Model):
     class Meta:
         verbose_name = "Empresa"
         verbose_name_plural = "Empresas"
+
+    def validate_cnpj(self):
+        cnpj = CNPJ()
+        if not cnpj.validate(self.cnpj):
+            raise ValidationError(f'CNPJ inválido!')
+        
+
+    def save(self, *args, **kwargs):
+        if not self.matricula:
+            self.gerar_matricula()
+        self.validate_cnpj()
+        super().save(*args, **kwargs)
 
 
 class Setor(models.Model):
