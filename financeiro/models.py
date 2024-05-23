@@ -3,16 +3,12 @@ from django.utils import timezone
 from core.models import Aluno
 
 class Pagamento(models.Model):
-    PENDENTE = 'PENDENTE'
-    PAGO = 'PAGO'
-    ATRASADO = 'ATRASADO'
-    CANCELADO = 'CANCELADO'
 
     STATUS_CHOICES = [
-        (PENDENTE, PENDENTE),
-        (PAGO, PAGO),
-        (ATRASADO, ATRASADO),
-        (CANCELADO, CANCELADO),
+        ('PENDENTE', 'PENDENTE'),
+        ('PAGO', 'PAGO'),
+        ('ATRASADO', 'ATRASADO'),
+        ('CANCELADO', 'CANCELADO'),
     ]
 
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
@@ -23,7 +19,7 @@ class Pagamento(models.Model):
     status = models.CharField(
         max_length=10,
         choices = STATUS_CHOICES,
-        default = PENDENTE,
+        default = 'PENDENTE',
     )
     def __str__(self):
         return f'Pagamento {self.id} - Aluno: {self.aluno.nome}'
