@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save
 class Empresa(models.Model):
     razao_social = models.CharField("Nome da Razão Social", max_length=50)
     nome_fantasia = models.CharField("Nome da Fantasia da Empresa", max_length=50)
+    natureza_juridica = models.CharField("Natureza Jurídica da Empresa", max_length=70)
     cnpj = models.CharField("CNPJ da Empresa", max_length=14)
     email = models.EmailField("Email da Empresa")
     telefone = models.CharField("Telefone da Empresa", max_length=11)
