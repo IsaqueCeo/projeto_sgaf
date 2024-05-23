@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from Login.models import Aluno
+from core.models import Aluno
 
 class Pagamento(models.Model):
     PENDENTE = 'PENDENTE'
