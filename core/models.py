@@ -158,7 +158,7 @@ class Funcionario(models.Model):
         
     usuario = models.OneToOneField(User, verbose_name='Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='funcionario')
     empresa = models.ForeignKey(Empresa, verbose_name='Empresa', on_delete=models.CASCADE)
-    dados_pessoais = models.ManyToManyField(Dadospessoais, verbose_name='Dados Pessoais', on_delete=models.CASCADE, blank=True, null=True)
+    dados_pessoais = models.OneToOneField(Dadospessoais, verbose_name='Dados Pessoais', blank=True, null=True, related_name='funcionario', on_delete=models.CASCADE)
     setor = models.ForeignKey(Setor, on_delete=models.CASCADE)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
@@ -231,7 +231,7 @@ class Aluno(models.Model):
     
     
     usuario = models.OneToOneField(User, verbose_name="Usuario", on_delete=models.CASCADE)
-    dados_pessoais = models.ManyToManyField(Dadospessoais, verbose_name='Dados Pessoais', on_delete=models.CASCADE, blank=True, null=True)
+    dados_pessoais = models.OneToOneField(Dadospessoais, verbose_name='Dados Pessoais', blank=True, null=True, on_delete=models.SET_NULL)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
     nome_da_mae = models.CharField("Nome da Mãe", max_length=100)

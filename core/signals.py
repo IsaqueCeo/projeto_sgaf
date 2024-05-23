@@ -1,6 +1,6 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from .models import Empresa, Dadospessoais
+from .models import Empresa, Dadospessoais, Funcionario
 import requests
 
 @receiver(pre_save, sender=Empresa)
