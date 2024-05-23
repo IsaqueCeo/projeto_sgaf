@@ -6,7 +6,7 @@ class Usuario(AbstractUser):
     e_funcionario = models.BooleanField(default=False)
     
     
-class PerfilAluno(models.Model):
+class Aluno(models.Model):
     matricula = models.CharField(max_length=20, unique=True, editable=False)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
@@ -25,7 +25,7 @@ class PerfilAluno(models.Model):
         if not self.matricula:
             while True:
                 matricula = self.gerar_matricula()
-                if not PerfilAluno.objects.filter(matricula=matricula).exists():
+                if not Aluno.objects.filter(matricula=matricula).exists():
                     self.matricula = matricula
                     break
         super().save(*args, **kwargs)
@@ -36,7 +36,7 @@ class PerfilAluno(models.Model):
 
 
 
-class PerfilFuncionario(models.Model):
+class Funcionario(models.Model):
     matricula_funcionario = models.CharField(max_length=20, unique=True, editable=False)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     departamento = models.CharField(max_length=100)
@@ -53,7 +53,7 @@ class PerfilFuncionario(models.Model):
         if not self.matricula_funcionario:
             while True:
                 matricula_funcionario = self.gerar_matricula()
-                if not PerfilFuncionario.objects.filter(matricula=matricula_funcionario).exists():
+                if not Funcionario.objects.filter(matricula=matricula_funcionario).exists():
                     self.matricula_funcionario = matricula_funcionario
                     break
 
@@ -62,5 +62,11 @@ class PerfilFuncionario(models.Model):
 
 
 
-class PerfilProfessor(models.Model):
+class Professor(models.Model):
     matricula_professor = models.CharField(max_length=100, unique=True, editable=False)
+    cpf = models.BigIntegerField(unique=True)
+    disciplina = models.ForeignKey()
+    email = models.EmailField(unique=True)
+    endereco = models.CharField(max_length=100)
+    formacao = models.CharField(max_length=100)
+    
