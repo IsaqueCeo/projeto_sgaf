@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 class Usuario(AbstractUser):
     e_aluno = models.BooleanField(default=False)
@@ -12,7 +13,9 @@ class Aluno(models.Model):
     email = models.EmailField(unique=True)
     curso = models.CharField(max_length=100)
     nome_responsavel = models.CharField(max_length=100)
-    ano_ingresso = models.PositiveIntegerField()
+    nome_social = models.CharField("Nome da Razão Social", max_length=100)
+    ano_ingresso = models.DateTimeField(default=timezone.now().year)
+    
 
     def gerar_matricula(self):
         if len(self.turma) >= 2:
@@ -65,7 +68,7 @@ class Funcionario(models.Model):
 class Professor(models.Model):
     matricula_professor = models.CharField(max_length=100, unique=True, editable=False)
     cpf = models.BigIntegerField(unique=True)
-    disciplina = models.ForeignKey()
+    # disciplina = models.ForeignKey()
     email = models.EmailField(unique=True)
     endereco = models.CharField(max_length=100)
     formacao = models.CharField(max_length=100)
