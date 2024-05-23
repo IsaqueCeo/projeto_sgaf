@@ -27,5 +27,7 @@ class Empresa(models.Model):
     def __str__(self):
         return self.razao_social
     
-
+    class Meta:
+        verbose_name = "Empresa"
+        verbose_name_plural = "Empresas"
 
