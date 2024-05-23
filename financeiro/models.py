@@ -100,4 +100,31 @@ class BolsaEstudo(models.Model):
     def __str__(self):
         return f'Bolsa {self.id} - Aluno {self.aluno.nome}'
 
+class Receita(models.Model):
+    fonte = models.CharField(max_length=50)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    data_recebimento = models.DateField(default=timezone.now)
+    descricao = models.TextField()
 
+    def __str__(self):
+        return f'Receita {self.id} - Fonte: {self.fonte}'
+
+class Despesa(models.Model):
+    tipo = models.CharField(max_length=50)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    data_pagamento = models.DateField(default=timezone.now)
+    descricao = models.TextField()
+
+    def __str__(self):
+        return f'Despesa {self.id} - Tipo: {self.tipo}'
+
+class Transacao(models.Model):
+    tipo = models.CharField(max_length=50)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    data = models.DateField(default=timezone.now)
+    descricao = models.TextField()
+    relacionamento_id = models.IntegerField()
+    relacionamento_tipo = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f'Transacao {self.id} - Tipo: {self.tipo}'
