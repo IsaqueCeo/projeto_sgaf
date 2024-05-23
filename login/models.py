@@ -15,6 +15,8 @@ class Aluno(models.Model):
     nome_responsavel = models.CharField(max_length=100)
     nome_social = models.CharField("Nome da Razão Social", max_length=100)
     ano_ingresso = models.DateTimeField(default=timezone.now().year)
+    data_nascimento = models.DateField(default=default_birth_date)
+    sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, default=MASCULINO)
     
 
     def gerar_matricula(self):
@@ -36,6 +38,64 @@ class Aluno(models.Model):
     
     # def __str__(self):
     #     return self.usuario.username
+
+
+
+# class Aluno(models.Model):
+#     ESTADO_CIVIL_CHOICES = [
+#         ('solteiro', 'Solteiro'),
+#         ('casado', 'Casado'),
+#         ('divorciado', 'Divorciado'),
+#         ('viuvo', 'Viúvo'),
+#         ('outro', 'Outro'),
+#     ]
+
+#     UF_CHOICES = [
+#         ('AC', 'Acre'),
+#         ('AL', 'Alagoas'),
+#         ('AP', 'Amapá'),
+#         ('AM', 'Amazonas'),
+#         ('BA', 'Bahia'),
+#         ('CE', 'Ceará'),
+#         ('DF', 'Distrito Federal'),
+#         ('ES', 'Espírito Santo'),
+#         ('GO', 'Goiás'),
+#         ('MA', 'Maranhão'),
+#         ('MT', 'Mato Grosso'),
+#         ('MS', 'Mato Grosso do Sul'),
+#         ('MG', 'Minas Gerais'),
+#         ('PA', 'Pará'),
+#         ('PB', 'Paraíba'),
+#         ('PR', 'Paraná'),
+#         ('PE', 'Pernambuco'),
+#         ('PI', 'Piauí'),
+#         ('RJ', 'Rio de Janeiro'),
+#         ('RN', 'Rio Grande do Norte'),
+#         ('RS', 'Rio Grande do Sul'),
+#         ('RO', 'Rondônia'),
+#         ('RR', 'Roraima'),
+#         ('SC', 'Santa Catarina'),
+#         ('SP', 'São Paulo'),
+#         ('SE', 'Sergipe'),
+#         ('TO', 'Tocantins'),
+#     ]
+
+#     estado_civil = models.CharField(
+#         max_length=10,
+#         choices=ESTADO_CIVIL_CHOICES,
+#         default='solteiro',
+#     )
+#     religiao = models.CharField(max_length=100, blank=True)
+#     uf_naturalidade = models.CharField(
+#         max_length=2,
+#         choices=UF_CHOICES,
+#         blank=True,
+#     )
+#     naturalidade = models.CharField(max_length=100, blank=True)
+#     nacionalidade = models.CharField(max_length=100, blank=True)
+
+#     def __str__(self):
+#         return f"{self.naturalidade} - {self.nacionalidade}"
 
 
 
@@ -68,7 +128,7 @@ class Funcionario(models.Model):
 class Professor(models.Model):
     matricula_professor = models.CharField(max_length=100, unique=True, editable=False)
     cpf = models.BigIntegerField(unique=True)
-    # disciplina = models.ForeignKey()
+    disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
     endereco = models.CharField(max_length=100)
     formacao = models.CharField(max_length=100)
