@@ -1,6 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
+# Atenção a importação abaixo, altera-la quando estiver pronta!
 from django.contrib.auth.models import User
+import random
+from django.utils import timezone
+from datetime import date
 
 
 # Create your models here.
@@ -131,3 +135,72 @@ class Setor(models.Model):
     class Meta:
         verbose_name = "Setor"
         verbose_name_plural = "Setores"  
+
+
+class Funcionario(models.Model):
+    SEXO = (
+        ('M', 'Masculino'),
+        ('F', 'Feminino'),
+    )
+    
+    ESTADO = (
+		('AC', 'Acre'), ('AL', 'Alagoas'), ('AP', 'Amapá'),
+		('AM', 'Amazonas'), ('BA', 'Bahia'), ('CE', 'Ceará'),
+		('DF', 'Distrito Federal'), ('ES', 'Espírito Santo'), ('GO', 'Goiás'),
+		('MA', 'Maranhão'), ('MT', 'Mato Grosso'), ('MS', 'Mato Grosso do Sul'),
+		('MG', 'Minas Gerais'), ('PA', 'Pará'), ('PB', 'Paraíba'),
+		('PR', 'Paraná'), ('PE', 'Pernambuco'), ('PI', 'Piauí'),
+		('RJ', 'Rio de Janeiro'), ('RN', 'Rio Grande do Norte'),
+		('RS', 'Rio Grande do Sul'), ('RO', 'Rondônia'), ('RR', 'Roraima'),
+		('SC', 'Santa Catarina'), ('SP', 'São Paulo'), ('SE', 'Sergipe'),
+		('TO', 'Tocantins')
+	)
+        
+    usuario = models.OneToOneField(User, verbose_name='Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='funcionario')
+    empresa = models.ForeignKey(Empresa, verbose_name='Empresa', on_delete=models.CASCADE)
+    dados_pessoais = models.ManyToManyField(Dadospessoais, verbose_name='Dados Pessoais', on_delete=models.CASCADE, blank=True, null=True)
+    setor = models.ForeignKey(Setor, on_delete=models.CASCADE)
+    telefone = models.CharField("Telefone", max_length=11)
+    nome = models.CharField("Nome Completo", max_length=100)
+    sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
+    uf_naturalizado = models.CharField('Estado', max_length=2, choices=ESTADO)
+    cpf = models.CharField("CPF", max_length=11, unique=True)
+    rg = models.CharField("RG", max_length=20, unique=True)
+    cep = models.CharField("CEP", max_length=8)
+    uf = models.CharField("UF", max_length=2, choices=ESTADO)
+    cidade = models.CharField('Cidade', max_length=50)
+    endereco = models.CharField("Nome da Rua/Avenida", max_length=50)
+    bairro = models.CharField("Bairro", max_length=25)
+    numero = models.CharField("Número", max_length=25)
+    nacionalidade = models.CharField("Nacionalidade", max_length=20, default="Brasileira")
+    data_nascimento = models.DateField('Data de Nascimento')
+    email = models.EmailField("Email")
+    matricula = models.CharField(max_length=20, unique=True, editable=False)    
+    ano_ingresso = models.DateTimeField(default=timezone.now().year)
+    
+    @property
+    def idade(self):
+        hoje = date.today()
+        diferenca = hoje - self.data_nascimento
+        return round(diferenca.days // 365.25) 
+
+    def __str__(self):
+        return self.nome
+    
+    def gerar_matricula(self):
+        ano_ingresso = str(self.ano_ingresso)
+        setor_abreviado = self.setor.nome[:3].upper()
+        numeros_aleatorios = ''.join(random.choices('0123456789', k=3))
+        nome_abreviado = self.nome[:2].upper()
+        self.matricula = ano_ingresso + setor_abreviado + numeros_aleatorios + nome_abreviado
+        return self.matricula
+        
+    def save(self, *args, **kwargs):
+        if not self.matricula:
+            self.gerar_matricula()
+        super().save(*args, **kwargs)
+        
+        
+    class Meta:
+        verbose_name = "Funcionário"
+        verbose_name_plural = "Funcionários"  
