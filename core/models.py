@@ -22,6 +22,7 @@ class Empresa(models.Model):
     assinatura_diretor = models.FileField("Assinatura do Diretor", blank=True, null=True)
     nome_secretario = models.CharField("Nome do Secretario(a) da Empresa", max_length=70, blank=True, null=True)
     assinatura_secretario = models.FileField("Assinatura do Secretário", blank=True, null=True)
+    confirmado = models.BooleanField("Confirmar Dados", default=False)
 
     def __str__(self):
         return self.razao_social
