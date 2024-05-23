@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from Login.models import Aluno
+from core.models import Aluno
 
 class Pagamento(models.Model):
     PENDENTE = 'PENDENTE'
@@ -50,7 +50,7 @@ class HistoricoPagamento(models.Model):
 
 class Fatura(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
-    valor_toral = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     data_emissao = models.DateField(default=timezone.now)
     data_vencimento = models.DateField()
     status = models.CharField(max_length=50)

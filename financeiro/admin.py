@@ -25,6 +25,11 @@ class FaturaAdmin(admin.ModelAdmin):
     search_fields = ('aluno__nome', 'status')
     list_filter = ('status', 'data_emissao', 'data_vencimento')
 
+    def get_valor_total(self, obj):
+        return obj.valor_total
+    get_valor_total.short_description = 'Valor Total'
+
+
 class DescontoAdmin(admin.ModelAdmin):
     list_display = ('id', 'fatura', 'tipo', 'valor', 'data_concessao')
     search_fields = ('fatura__aluno__nome', 'tipo')
@@ -60,9 +65,18 @@ class DespesaAdmin(admin.ModelAdmin):
     list_filter = ('data_pagamento',)
 
 class TransacaoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'tipo', 'valor', 'data', 'descricao', 'relacionado_id', 'relacionado_tipo')
-    search_fields = ('tipo', 'descricao', 'relacionado_tipo')
+    list_display = ('id', 'tipo', 'valor', 'data', 'descricao', 'get_relacionado_id', 'get_relacionado_tipo')
+    search_fields = ('tipo', 'descricao', 'relacionado__tipo')
     list_filter = ('data', 'tipo')
+
+    def get_relacionado_id(self, obj):
+        return obj.relacionado.id if obj.relacionado else None
+    get_relacionado_id.short_description = 'Relacionado ID'
+
+    def get_relacionado_tipo(self, obj):
+        return obj.relacionado.__class__.__name__ if obj.relacionado else None
+    get_relacionado_tipo.short_description = 'Relacionado Tipo'
+
 
 
 admin.site.register(Pagamento, PagamentoAdmin)
