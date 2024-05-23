@@ -118,3 +118,16 @@ class Empresa(models.Model):
         verbose_name = "Empresa"
         verbose_name_plural = "Empresas"
 
+
+class Setor(models.Model):
+    empresa = models.ForeignKey(Empresa, verbose_name='Empresa', on_delete=models.CASCADE)
+    nome = models.CharField("Nome do Setor", max_length=100)
+    telefone = models.CharField("Telefone do setor", max_length=11)
+    observacoes = models.TextField("Atribuições do Setor", default="Setor da empresa em alta produtividade")
+    
+    def __str__(self):
+        return self.nome
+    
+    class Meta:
+        verbose_name = "Setor"
+        verbose_name_plural = "Setores"  
