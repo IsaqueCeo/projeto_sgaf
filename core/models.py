@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 import random
 from django.utils import timezone
 from datetime import date
+from validate_docbr import CPF
+from django.core.exceptions import ValidationError
 
 
 # Create your models here.
@@ -194,10 +196,17 @@ class Funcionario(models.Model):
         nome_abreviado = self.nome[:2].upper()
         self.matricula = ano_ingresso + setor_abreviado + numeros_aleatorios + nome_abreviado
         return self.matricula
+
+    def validate_cpf(self):
+        cpf = CPF()
+        if not cpf.validate(self.cpf):
+            raise ValidationError(f'CPF inválido!')
         
+
     def save(self, *args, **kwargs):
         if not self.matricula:
             self.gerar_matricula()
+        self.validate_cpf()
         super().save(*args, **kwargs)
         
         
@@ -271,14 +280,28 @@ class Aluno(models.Model):
         nome_abreviado = self.nome[:2].upper()
         self.matricula = ano_ingresso + setor_abreviado + numeros_aleatorios + nome_abreviado
         return self.matricula
+    
+    
+    def validate_cpf(self):
+        cpf = CPF()
+        if not cpf.validate(self.cpf):
+            raise ValidationError(f'CPF inválido!')
+        
 
     def save(self, *args, **kwargs):
         if not self.matricula:
             self.gerar_matricula()
+        self.validate_cpf()
         super().save(*args, **kwargs)
     
     
         class Meta:
             verbose_name = "Aluno"
             verbose_name_plural = "Alunos" 
+    
+class Turma(models.Model):
+    ...
+
+class SaladeAula(models.Model):
+    numero = models.CharField("Sala de Aula", max_length=20)
     
