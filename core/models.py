@@ -151,6 +151,9 @@ class Setor(models.Model):
         verbose_name_plural = "Setores"  
 
 
+class Professor(models.Model):
+	...
+
 class Funcionario(models.Model):
     SEXO = (
         ('M', 'Masculino'),
@@ -310,10 +313,23 @@ class Aluno(models.Model):
         class Meta:
             verbose_name = "Aluno"
             verbose_name_plural = "Alunos" 
+
+class Nivel(models.Model):
+    nivel = models.CharField("Nivel de Ensino", max_length=30)
+    resumo_mec = models.TextField("Observações do MEC")
     
-class Turma(models.Model):
-    ...
+    def __str__(self):
+        return self.nivel
+    
+    class Meta:
+        verbose_name = "Curso"
+        verbose_name_plural = "Cursos"  
+
+
 
 class SaladeAula(models.Model):
     numero = models.CharField("Sala de Aula", max_length=20)
+
+class Turma(models.Model):
+    ...
     
