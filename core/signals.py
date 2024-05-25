@@ -1,7 +1,10 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from .models import Empresa, Dadospessoais, Funcionario
+from .models import Empresa, Dadospessoais, Funcionario, Professor
 import requests
+from django.contrib.auth.models import User
+
+### Preenchimento Automático de dados da Empresa por Viacep
 
 @receiver(pre_save, sender=Empresa)
 def preencher_endereco_via_cep(sender, instance, **kwargs):
@@ -17,6 +20,8 @@ def preencher_endereco_via_cep(sender, instance, **kwargs):
                 instance.estado = dados.get("uf", "")
         except requests.exceptions.RequestException as e:
             print(f"Erro ao obter dados do CEP: {e}")
+            
+### Preenchimento Automático de dados da Empresa por CNPJ            
 
 @receiver(pre_save, sender=Empresa)
 def preencher_dados_pelo_cnpj(sender, instance, **kwargs):
@@ -33,11 +38,14 @@ def preencher_dados_pelo_cnpj(sender, instance, **kwargs):
             print(f"Erro ao obter dados do CNPJ: {e}")
 
 
+### Criando tabela de dados pessoais do Funcionário
+
 @receiver(post_save, sender=Funcionario)
 def criar_dados_pessoais_do_funcionario(sender, instance, created, **kwargs):
     if created:
         dados_funcionario = Dadospessoais.objects.create(
             nome=instance.nome,
+            nome_da_mae=instance.nome_da_mae,
             data_nascimento=instance.data_nascimento,
             uf_naturalizado=instance.uf_naturalizado,
             uf=instance.uf,
@@ -55,16 +63,59 @@ def criar_dados_pessoais_do_funcionario(sender, instance, created, **kwargs):
         instance.save()
 
 
-# @receiver(post_save, sender=Funcionario)
-# def criar_funcionario(sender, instance, created, **kwargs):
-#     if created:
-#         funcionario = User.objects.create(
-#             username=instance.matricula,              
-#             email=instance.email, 
-#             first_name=instance.nome.split()[0],
-#             last_name=' '.join(instance.nome.split()[1:])
-#             )
-#         funcionario.set_password(instance.cpf)
-#         funcionario.save()
-#         instance.usuario = funcionario
-#         instance.save()
+### Criando usuário de login do Funcionário 
+
+@receiver(post_save, sender=Funcionario)
+def criar_usuario_funcionario(sender, instance, created, **kwargs):
+    if created:
+        funcionario = User.objects.create(
+            username=instance.matricula,              
+            email=instance.email, 
+            first_name=instance.nome.split()[0],
+            last_name=' '.join(instance.nome.split()[1:])
+            )
+        funcionario.set_password(instance.cpf)
+        funcionario.save()
+        instance.usuario = funcionario
+        instance.save()
+        
+### Criando tabela de dados pessoais do Professor      
+        
+@receiver(post_save, sender=Professor)
+def criar_dados_pessoais_do_professor(sender, instance, created, **kwargs):
+    if created:
+        dados_professor = Dadospessoais.objects.create(
+            nome=instance.nome,
+            nome_da_mae=instance.nome_da_mae,
+            data_nascimento=instance.data_nascimento,
+            uf_naturalizado=instance.uf_naturalizado,
+            uf=instance.uf,
+            cep=instance.cep,
+            cidade=instance.cidade,
+            endereco=instance.endereco,
+            bairro=instance.bairro,
+            numero=instance.numero,
+            nacionalidade=instance.nacionalidade,
+            cpf=instance.cpf,
+            rg=instance.rg
+        )
+        dados_professor.save()
+        instance.dados_pessoais = dados_professor
+        instance.save()
+
+
+### Criando usuário de login do Professor 
+
+@receiver(post_save, sender=Professor)
+def criar_usuario_professor(sender, instance, created, **kwargs):
+    if created:
+        usuario_professor = User.objects.create(
+            username=instance.matricula,              
+            email=instance.email, 
+            first_name=instance.nome.split()[0],
+            last_name=' '.join(instance.nome.split()[1:])
+            )
+        usuario_professor.set_password(instance.cpf)
+        usuario_professor.save()
+        instance.usuario = usuario_professor
+        instance.save()

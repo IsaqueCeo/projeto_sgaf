@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'login',
     'core',
     'corsheaders',
-    'financeiro'
+    'financeiro',
+    'gestao_escolar'
 ]
 
 MIDDLEWARE = [
