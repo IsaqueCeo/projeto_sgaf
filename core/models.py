@@ -269,9 +269,9 @@ class Professor(models.Model):
         super().save(*args, **kwargs)
     
     
-        class Meta:
-            verbose_name = "Professor"
-            verbose_name_plural = "Professores" 
+    class Meta:
+        verbose_name = "Professor"
+        verbose_name_plural = "Professores" 
 
 class Funcionario(models.Model):
     SEXO = (
