@@ -128,7 +128,7 @@ class Empresa(models.Model):
     razao_social = models.CharField("Nome da Razão Social", max_length=50, blank=True, null=True)
     nome_fantasia = models.CharField("Nome Fantasia", max_length=50, blank=True, null=True)
     natureza_juridica = models.CharField("Natureza Jurídica", max_length=70, blank=True, null=True)
-    cnpj = models.CharField("CNPJ", max_length=14, unique=True)  # adicionado unique=True
+    cnpj = models.CharField("CNPJ", max_length=14, unique=True) 
     email = models.EmailField("Email")
     telefone = models.CharField("Telefone", max_length=11)
     cep = models.CharField("CEP", max_length=8)
@@ -163,7 +163,7 @@ class Empresa(models.Model):
 
 
 class Setor(models.Model):
-    empresa = models.ForeignKey('Empresa', verbose_name='Empresa', on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, verbose_name='Empresa', on_delete=models.CASCADE)
     nome = models.CharField("Nome do Setor", max_length=100)
     telefone = models.CharField("Telefone do Setor", max_length=11)
     observacoes = models.TextField("Atribuições do Setor", default="Setor da empresa em alta produtividade")
