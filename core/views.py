@@ -39,6 +39,8 @@ def novo_setor(request):
         form = NovoSetorForm()
     return render(request, 'empresa/setor.html', {'form': form})
 
+
+
 @login_required
 def lista_setores(request):
     template_name = 'empresa/setores.html'
