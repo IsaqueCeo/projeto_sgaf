@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from .models import Empresa, Dadospessoais, Funcionario, Professor
+from .models import Empresa, Dadospessoais, Funcionario, Professor, Aluno
 import requests
 from django.contrib.auth.models import User
 
@@ -20,6 +20,61 @@ def preencher_endereco_via_cep(sender, instance, **kwargs):
                 instance.estado = dados.get("uf", "")
         except requests.exceptions.RequestException as e:
             print(f"Erro ao obter dados do CEP: {e}")
+            
+            
+### Preenchimento Automático de dados do Aluno por Viacep
+
+@receiver(pre_save, sender=Aluno)
+def preencher_endereco_via_cep(sender, instance, **kwargs):
+    if instance.cep and not instance.endereco:
+        try:
+            url = f"https://viacep.com.br/ws/{instance.cep}/json/"
+            response = requests.get(url)
+            if response.status_code == 200:
+                dados = response.json()
+                instance.endereco = dados.get("logradouro", "")
+                instance.bairro = dados.get("bairro", "")
+                instance.cidade = dados.get("localidade", "")
+                instance.estado = dados.get("uf", "")
+        except requests.exceptions.RequestException as e:
+            print(f"Erro ao obter dados do CEP: {e}")           
+            
+            
+### Preenchimento Automático de dados do Professor por Viacep
+
+@receiver(pre_save, sender=Professor)
+def preencher_endereco_via_cep(sender, instance, **kwargs):
+    if instance.cep and not instance.endereco:
+        try:
+            url = f"https://viacep.com.br/ws/{instance.cep}/json/"
+            response = requests.get(url)
+            if response.status_code == 200:
+                dados = response.json()
+                instance.endereco = dados.get("logradouro", "")
+                instance.bairro = dados.get("bairro", "")
+                instance.cidade = dados.get("localidade", "")
+                instance.estado = dados.get("uf", "")
+        except requests.exceptions.RequestException as e:
+            print(f"Erro ao obter dados do CEP: {e}")          
+
+
+### Preenchimento Automático de dados do Professor por Viacep
+
+@receiver(pre_save, sender=Funcionario)
+def preencher_endereco_via_cep(sender, instance, **kwargs):
+    if instance.cep and not instance.endereco:
+        try:
+            url = f"https://viacep.com.br/ws/{instance.cep}/json/"
+            response = requests.get(url)
+            if response.status_code == 200:
+                dados = response.json()
+                instance.endereco = dados.get("logradouro", "")
+                instance.bairro = dados.get("bairro", "")
+                instance.cidade = dados.get("localidade", "")
+                instance.estado = dados.get("uf", "")
+        except requests.exceptions.RequestException as e:
+            print(f"Erro ao obter dados do CEP: {e}")         
+
             
 ### Preenchimento Automático de dados da Empresa por CNPJ            
 
