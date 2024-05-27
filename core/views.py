@@ -24,6 +24,19 @@ from django.shortcuts import render, redirect
 
 
 
+###########################################################
+###################### EMPRESA ############################
+###########################################################
+
+
+
+
+
+###########################################################
+###################### SETOR ##############################
+###########################################################
+
+
 #Function Based View para criar um novo setor na minha empresa
 @login_required
 def novo_setor(request):
@@ -34,7 +47,7 @@ def novo_setor(request):
             setor.empresa = request.user.funcionario.empresa
             setor.save()
             messages.success(request, "Setor criado com sucesso!")
-            return redirect('home')
+            return redirect('dashboard')
     else:
         form = NovoSetorForm()
     return render(request, 'empresa/setor.html', {'form': form})
