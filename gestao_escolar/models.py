@@ -2,16 +2,7 @@ from django.db import models
 from core.models import Empresa, Nivel, Disciplina, Aluno, SaladeAula
 # Create your models here.
 
-class Turma(models.Model):
-    
-    TIPO_TURMA = (
-        ('A', 'Turma A'),
-        ('B', 'Turma B'),
-        ('C', 'Turma C'),
-        ('D', 'Turma D'),
-        ('E', 'Turma E'),
-    )
-    
+class Serie(models.Model):
     SERIE = (
         ('F11', '1º Ano'),
         ('F12', '2º Ano'),
@@ -29,6 +20,29 @@ class Turma(models.Model):
         ('T', 'Vespertino'),
         ('N', 'Noturno'),
     )
+
+    serie = models.CharField("Série da Turma", choices=SERIE, max_length=3)
+    turno = models.CharField("Turno da Turma", choices=TURNO, max_length=1)
+
+    def __str__(self):
+        return f"{self.serie} -  {self.turno}"
+    
+    class Meta:
+        verbose_name = "Série"
+        verbose_name_plural = "Séries"
+
+
+class Turma(models.Model):
+    
+    TIPO_TURMA = (
+        ('A', 'Turma A'),
+        ('B', 'Turma B'),
+        ('C', 'Turma C'),
+        ('D', 'Turma D'),
+        ('E', 'Turma E'),
+    )
+    
+
     
     STATUS_CHOICES = (
         ('Iniciando', 'Iniciando'),
@@ -44,10 +58,9 @@ class Turma(models.Model):
     ano_letivo = models.PositiveSmallIntegerField("Ano Letivo")
     nome_turma = models.CharField("Nome da Turma", choices=TIPO_TURMA, max_length=1)
     alunos = models.ManyToManyField(Aluno, related_name='alunos', verbose_name="Alunos")
-    serie = models.CharField("Série da Turma", choices=SERIE, max_length=3)
     sala_de_aula = models.ForeignKey(SaladeAula, on_delete=models.CASCADE, verbose_name="Sala de Aula")
-    turno = models.CharField("Turno da Turma", choices=TURNO, max_length=1)
     status = models.CharField("Status da Turma", max_length=20, choices=STATUS_CHOICES, default='Iniciando')
+    serie = models.ForeignKey(Serie, related_name='series', verbose_name='series', on_delete=models.CASCADE)
 
 
     def __str__(self):
