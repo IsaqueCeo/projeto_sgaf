@@ -24,7 +24,7 @@ from django.shortcuts import render, redirect
 
 
 
-#Function Based View para criar um novo setor
+#Function Based View para criar um novo setor na minha empresa
 @login_required
 def novo_setor(request):
     if request.method == 'POST':
@@ -40,7 +40,7 @@ def novo_setor(request):
     return render(request, 'empresa/setor.html', {'form': form})
 
 
-
+#Function Based View para listar todos os setores da minha empresa
 @login_required
 def lista_setores(request):
     template_name = 'empresa/setores.html'
@@ -50,3 +50,39 @@ def lista_setores(request):
         'setores': setores,
     }
     return render(request, template_name, context)
+
+
+#Function Based View para atualizar um setor da minha empresa
+@login_required
+def atualizar_setor(request, id):
+    empresa = request.user.funcionario.empresa
+    setor = Setor.objects.get(id=id, empresa=empresa)
+    form = NovoSetorForm(instance=setor)
+    template_name = 'empresa/atualizar-setor.html'
+    if request.method == "POST":
+        form = NovoSetorForm(request.POST, instance=setor)
+        if form.is_valid():
+            form.save()
+            return redirect("atualizar-setor", id=id)
+        else:
+            return render(request, template_name, {'form': form})
+    else:
+        return render(request, template_name, {'form': form})
+
+
+#Function Based View para deletar um setor da minha empresa
+@login_required
+def deletar_setor(request, id):
+    empresa = request.user.funcionario.empresa
+    setor = Setor.objects.get(id=id, empresa=empresa)
+    setor.delete()
+    return redirect('listar-setores')
+
+
+#Function Based View para detalhar um setor da minha empresa
+@login_required
+def detalhar_setor(request, id):
+    empresa = request.user.funcionario.empresa
+    setor = Setor.objects.get(id=id, empresa=empresa )
+    return render(request, 'empresa/detalhar-setor.html', {'setor':setor})
+

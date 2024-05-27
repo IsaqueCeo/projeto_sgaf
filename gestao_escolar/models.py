@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import Empresa, Nivel, Disciplina, Aluno, SaladeAula
+from .utils import calcular_media_bimestre
 # Create your models here.
 
 class Serie(models.Model):
@@ -138,27 +139,19 @@ class BoletimDoAlunoPorDisciplina(models.Model):
     
     @property
     def nota_media_bimestre_um(self):
-        if self.primeira_nota_bimestre_um is not None and self.segunda_nota_bimestre_um is not None:
-            return (self.primeira_nota_bimestre_um + self.segunda_nota_bimestre_um) / 2
-        return None
+        return calcular_media_bimestre(self.primeira_nota_bimestre_um, self.segunda_nota_bimestre_um)
     
     @property
     def nota_media_bimestre_dois(self):
-        if self.primeira_nota_bimestre_dois is not None and self.segunda_nota_bimestre_dois is not None:
-            return (self.primeira_nota_bimestre_dois + self.segunda_nota_bimestre_dois) / 2
-        return None
+        return calcular_media_bimestre(self.primeira_nota_bimestre_dois, self.segunda_nota_bimestre_dois)
 
     @property
     def nota_media_bimestre_tres(self):
-        if self.primeira_nota_bimestre_tres is not None and self.segunda_nota_bimestre_tres is not None:
-            return (self.primeira_nota_bimestre_tres + self.segunda_nota_bimestre_tres) / 2
-        return None
+        return calcular_media_bimestre(self.primeira_nota_bimestre_tres, self.segunda_nota_bimestre_tres)
 
     @property
     def nota_media_bimestre_quatro(self):
-        if self.primeira_nota_bimestre_quatro is not None and self.segunda_nota_bimestre_quatro is not None:
-            return (self.primeira_nota_bimestre_quatro + self.segunda_nota_bimestre_quatro) / 2
-        return None
+        return calcular_media_bimestre(self.primeira_nota_bimestre_quatro, self.segunda_nota_bimestre_quatro)
    
 # class BoletimDoAluno(models.Model):
 #     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
