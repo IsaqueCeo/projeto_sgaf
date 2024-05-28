@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Pagamento, Inadimplencia, HistoricoPagamento, Fatura,
-    Desconto, Taxa, PagamentoTaxa, Multa, BolsaEstudo, Receita,
-    Despesa, Transacao
+    Pagamento, Mensalidade, Fatura, Taxa, Despesa, Faturamento
 )
 # Register your models here.
 class PagamentoAdmin(admin.ModelAdmin):
@@ -80,14 +78,6 @@ class TransacaoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Pagamento, PagamentoAdmin)
-admin.site.register(Inadimplencia, InadimplenciaAdmin)
-admin.site.register(HistoricoPagamento, HistoricoPagamentoAdmin)
 admin.site.register(Fatura, FaturaAdmin)
-admin.site.register(Desconto, DescontoAdmin)
 admin.site.register(Taxa, TaxaAdmin)
-admin.site.register(PagamentoTaxa, PagamentoTaxaAdmin)
-admin.site.register(Multa, MultaAdmin)
-admin.site.register(BolsaEstudo, BolsaEstudoAdmin)
-admin.site.register(Receita, ReceitaAdmin)
 admin.site.register(Despesa, DespesaAdmin)
-admin.site.register(Transacao, TransacaoAdmin)
