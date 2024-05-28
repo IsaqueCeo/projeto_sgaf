@@ -398,7 +398,7 @@ class Aluno(models.Model):
     data_nascimento = models.DateField('Data de Nascimento')
     email = models.EmailField("Email")
     matricula = models.CharField(max_length=20, unique=True, editable=False)   
-    ano_ingresso = models.DateTimeField(default=timezone.now().year)
+    ano_ingresso = models.DateTimeField(default=timezone.now)
     data_de_ingresso = models.DateTimeField(default=timezone.now)
 
 
