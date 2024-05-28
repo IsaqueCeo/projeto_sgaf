@@ -1,4 +1,4 @@
-from .models import Setor, Professor
+from .models import Setor, Professor, Funcionario
 from django.views.generic import CreateView, ListView
 from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario
 from django.contrib import messages
@@ -76,6 +76,7 @@ def atualizar_setor(request, id):
         form = NovoSetorForm(request.POST, instance=setor)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Setor atualizado com sucesso!')
             return redirect("atualizar-setor", id=id)
         else:
             return render(request, template_name, {'form': form})
@@ -148,16 +149,17 @@ def atualizar_professor(request, id):
 @login_required
 def deletar_professor(request, id):
     empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
-    professores.delete()
+    professor = Professor.objects.filter(empresa=empresa, id=id)
+    professor.delete()
     return redirect('listar-professor')
 
 
 @login_required
 def detalhar_professor(request, id):
     empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
-    return render(request, 'empresa/detalhar-professor.html', {'professores':professores})
+    professor = Professor.objects.get(id=id)  
+    professor = Professor.objects.get(id=id)
+    return render(request, 'empresa/detalhar-professor.html', {'professor':professor})
 
 
 ############################################################################
@@ -165,35 +167,35 @@ def detalhar_professor(request, id):
 ############################################################################
 
 @login_required
-def novo_professor(request):
+def novo_funcionario(request):
     if request.method == 'POST':
         form = NovoFuncionario(request.POST)
         if form.is_valid():
-            professor = form.save(commit=False)
-            professor.empresa = request.user.funcionario.empresa
-            professor.save()
-            messages.success(request, "Professor criado com sucesso!")
+            funcionario = form.save(commit=False)
+            funcionario.empresa = request.user.funcionario.empresa
+            funcionario.save()
+            messages.success(request, "Funcionário criado com sucesso!")
             return redirect('dashboard')
     else:
         form = NovoFuncionario()
-        return render(request, 'empresa/novo-professor.html', {'form': form})
+        return render(request, 'empresa/novo-funcionario.html', {'form': form})
 
 
 @login_required
-def listar_professor(request):
-    template_name = 'empresa/listar-professores.html'
+def listar_funcionarios(request):
+    template_name = 'empresa/listar-funcionarios.html'
     empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
+    funcionarios = Funcionario.objects.filter(empresa=empresa)
     context = {
-        'professores': professores,
+        'funcionarios': funcionarios,
     }
     return render(request, template_name, context)
 
 
 @login_required
-def atualizar_professor(request, id):
+def atualizar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
+    professores = Funcionario.objects.filter(empresa=empresa)
     form = NovoProfessorForm(instance=professores)
     template_name = 'empresa/atualizar-professor.html'
     if request.method == "POST":
@@ -205,10 +207,10 @@ def atualizar_professor(request, id):
             return render(request, template_name, {'form': form})
 
 @login_required
-def deletar_professor(request, id):
+def deletar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
-    professores.delete()
+    funcionario = Funcionario.objects.get(empresa=empresa, id=id)
+    funcionario.delete()
     return redirect('listar-professor')
 
 
