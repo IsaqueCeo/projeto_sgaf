@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Turma, Aula, FrequenciaDoAluno
+from .models import Turma, Aula, Serie ,FrequenciaDoAluno
 
 # Register your models here.
 @admin.register(Turma)
 class TurmaAdmin(admin.ModelAdmin):
-    list_display = ["id", "instituicao",  "nome_turma" ,"sala_de_aula", "turno", "status"]
+    list_display = ["id", "instituicao",  "nome_turma" ,"sala_de_aula", "status"]
     list_display_links = ["id", "nome_turma"]
     search_fields = ["id", "sala_de_aula"]
     list_editable = ["status"]
@@ -18,7 +18,9 @@ class AulaAdmin(admin.ModelAdmin):
     search_fields = ["data", "disciplina"]
     list_editable = ["status"]
     list_per_page = 10
-    
+
+admin.site.register(Serie)
+
     
 @admin.register(FrequenciaDoAluno)
 class FrequenciaDoAlunoAdmin(admin.ModelAdmin):

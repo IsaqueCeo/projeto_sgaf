@@ -17,14 +17,14 @@ class Taxa(models.Model):
 
 
     juros = models.DecimalField('Juros', max_digits=3 ,decimal_places=2)
-    multas = models.DecimalField('Multas', max_digits=3 ,decimal_places=2)
-    tipo = models.CharField('Tipo',choices=TIPO)
+    multa = models.DecimalField('Multas', max_digits=3 ,decimal_places=2)
+    tipo = models.CharField('Tipo', max_length=50 ,choices=TIPO)
     valor_bolsa = models.DecimalField('Bolsa', max_digits=3, decimal_places=2 )
 
 
 class Fatura(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
-    valor_mensal = models.ForeignKey(Mensalidade.valor, on_delete=models.CASCADE)
+    valor_mensal = models.ForeignKey(Mensalidade, on_delete=models.CASCADE)
     data_emissao = models.DateField(default=timezone.now)
     data_vencimento = models.DateField()
     status = models.CharField(max_length=50)
@@ -43,7 +43,7 @@ class Pagamento(models.Model):
 
     boleto = models.ForeignKey(Fatura, on_delete=models.CASCADE)
     pago = models.BooleanField(default=False)
-    status = models.CharField('Status', choices=STATUS)
+    status = models.CharField('Status',max_length=50 , choices=STATUS)
 
 class Despesa(models.Model):
 
@@ -57,11 +57,11 @@ class Despesa(models.Model):
     )
 
     nome = models.CharField('Nome da Despesa', max_length=150, blank=False, null=False)
-    categoria = models.CharField('Categoria da Despesa',choices=CATEGORIA)
-    valor = models.DecimalField('Valor',decimal_places=2)
+    categoria = models.CharField('Categoria da Despesa',max_length=50,choices=CATEGORIA)
+    valor = models.DecimalField('Valor',decimal_places=2, max_digits=5)
     data  = models.DateField('Data do Pagamento', auto_now_add=True)
     descricao = models.TextField('Descrição do Pagamento', max_length=300, blank=True)
-    metodo = models.CharField('Método de Pagamento')
+    metodo = models.CharField('Método de Pagamento',max_length=50 ,blank=True)
 
 
 class Faturamento(models.Model):
@@ -75,10 +75,12 @@ class Faturamento(models.Model):
     )
 
     nome = models.CharField('Nome do Faturamento', max_length=150, blank=False, null=False)
-    categoria = models.CharField('Categoria do Faturamento',choices=CATEGORIA)
-    valor = models.DecimalField('Valor',decimal_places=2)
+    categoria = models.CharField('Categoria do Faturamento',max_length=50,choices=CATEGORIA)
+    valor = models.DecimalField('Valor',decimal_places=2, max_digits=5)
     data  = models.DateField('Data do Fautramento', auto_now_add=True)
     descricao = models.TextField('Descrição do Faturamento', max_length=300, blank=True)
+
+
 
     
 
