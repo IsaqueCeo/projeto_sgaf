@@ -400,6 +400,7 @@ class Aluno(models.Model):
     data_de_ingresso = models.DateTimeField(default=timezone.now)
 
 
+
     @property
     def idade(self):
         hoje = date.today()

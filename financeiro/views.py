@@ -31,7 +31,7 @@ def EditarMensalidade(request, pk):
 
 @login_required
 
-def NovaTaxa(request):
+def NovaTaxa(request, pk):
 
     template_name = ''
     context = {

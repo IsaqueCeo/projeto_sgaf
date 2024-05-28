@@ -8,21 +8,36 @@ class Mensalidade(models.Model):
     serie = models.ForeignKey(Serie, on_delete=models.CASCADE)
     valor = models.DecimalField('Valor da Mensalidade', decimal_places=2, max_digits=10)
 
+    def __str__(self):
+
+        return f'{self.serie} - {self.valor}'
+
 class Taxa(models.Model):   
 
-    TIPO = (
-        ('1','Percentual'),
-        ('2', 'Valor Fixo')
-    )
+
 
 
     juros = models.DecimalField('Juros', max_digits=3 ,decimal_places=2)
     multa = models.DecimalField('Multas', max_digits=3 ,decimal_places=2)
-    valor_bolsa = models.DecimalField('Bolsa', max_digits=4, decimal_places=2 )
+
+
+
+class Bolsa(models.Model):
+    
+    TIPO = (
+        ('1','Percentual'),
+        ('2', 'Valor Fixo')
+    )
+    
+    valor_bolsa = models.DecimalField('Bolsa', max_digits=6, decimal_places=2 )
     tipo = models.CharField('Tipo da Bolsa', max_length=50 ,choices=TIPO)
 
+    def __str__(self):
+        if self.tipo == '1':
+            return f'O valor da bolsa é de {self.valor_bolsa}%'
+        else:
+            return f'O valor da bolsa é de R${self.valor_bolsa}'
 
-    
 
 
 class Fatura(models.Model):
@@ -31,6 +46,7 @@ class Fatura(models.Model):
     data_emissao = models.DateField(default=timezone.now)
     data_vencimento = models.DateField()
     status = models.CharField(max_length=50)
+    bolsa = models.ForeignKey(Bolsa, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f'Fatura {self.id} - Aluno: {self.aluno.nome}'
