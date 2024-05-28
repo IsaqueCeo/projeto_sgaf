@@ -4,10 +4,9 @@ from core.models import Aluno
 from gestao_escolar.models import Serie
 
 
-class Mensalidade(models.Model):
-    
+class Mensalidade(models.Model):    
     serie = models.ForeignKey(Serie, on_delete=models.CASCADE)
-    valor = models.FloatField('Valor da Mensalidade', decimal_place=2)
+    valor = models.DecimalField('Valor da Mensalidade', decimal_places=2, max_digits=10)
 
 class Taxa(models.Model):   
 
@@ -17,10 +16,10 @@ class Taxa(models.Model):
     )
 
 
-    juros = models.FloatField('Juros', max_digits=3 ,decimal_places=2)
-    multas = models.FloatField('Multas', max_digits=3 ,decimal_places=2)
+    juros = models.DecimalField('Juros', max_digits=3 ,decimal_places=2)
+    multas = models.DecimalField('Multas', max_digits=3 ,decimal_places=2)
     tipo = models.CharField('Tipo',choices=TIPO)
-    valor_bolsa = models.FloatField('Bolsa', max_digits=3, decimal_places=2 )
+    valor_bolsa = models.DecimalField('Bolsa', max_digits=3, decimal_places=2 )
 
 
 class Fatura(models.Model):
