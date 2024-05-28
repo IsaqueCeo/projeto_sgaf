@@ -12,6 +12,11 @@ class LandingPageEmpresaForm(forms.ModelForm):
     class Meta:
         model = Empresa
         fields = ['cnpj', 'nome_diretor', 'telefone', 'cep', 'email']
+        
+class EmpresaCompletaForm(forms.ModelForm):
+    class Meta:
+        model = Empresa
+        fields = '__all__'
 
 
 class NovoProfessorForm(forms.ModelForm):

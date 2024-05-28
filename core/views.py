@@ -1,11 +1,12 @@
 from .models import Setor, Professor, Funcionario
 from django.views.generic import CreateView, ListView
-from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario
+from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
+
 # Create your views here.
 
 #Class Based View para criar um novo setor
@@ -28,8 +29,21 @@ from django.shortcuts import render, redirect
 ###################### EMPRESA ############################
 ###########################################################
 
+def is_superuser(user):
+    return user.is_superuser
 
+@user_passes_test(is_superuser)
+def cadastrar_empresa_adm(request):
+    if request.method == 'POST':
+        form = EmpresaCompletaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Empresa cadastrada com sucesso!")
+            return redirect('dashboard')
+    else:
+        form = EmpresaCompletaForm() 
 
+    return render(request, 'adm/cadastrar-empresa.html', {'form': form})
 
 
 ###########################################################
@@ -55,7 +69,7 @@ def novo_setor(request):
 
 #Function Based View para listar todos os setores da minha empresa
 @login_required
-def lista_setores(request):
+def listar_setores(request):
     template_name = 'empresa/setores.html'
     empresa = request.user.funcionario.empresa
     setores = Setor.objects.filter(empresa=empresa)       
@@ -97,7 +111,7 @@ def deletar_setor(request, id):
 @login_required
 def detalhar_setor(request, id):
     empresa = request.user.funcionario.empresa
-    setor = Setor.objects.get(id=id, empresa=empresa )
+    setor = Setor.objects.get(id=id, empresa=empresa)
     return render(request, 'empresa/detalhar-setor.html', {'setor':setor})
 
 
