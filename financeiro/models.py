@@ -58,7 +58,7 @@ class Despesa(models.Model):
 
     nome = models.CharField('Nome da Despesa', max_length=150, blank=False, null=False)
     categoria = models.CharField('Categoria da Despesa',choices=CATEGORIA)
-    valor = models.FloatField('Valor',decimal_place=2)
+    valor = models.DecimalField('Valor',decimal_places=2)
     data  = models.DateField('Data do Pagamento', auto_now_add=True)
     descricao = models.TextField('Descrição do Pagamento', max_length=300, blank=True)
     metodo = models.CharField('Método de Pagamento')
@@ -76,7 +76,7 @@ class Faturamento(models.Model):
 
     nome = models.CharField('Nome do Faturamento', max_length=150, blank=False, null=False)
     categoria = models.CharField('Categoria do Faturamento',choices=CATEGORIA)
-    valor = models.FloatField('Valor',decimal_place=2)
+    valor = models.DecimalField('Valor',decimal_places=2)
     data  = models.DateField('Data do Fautramento', auto_now_add=True)
     descricao = models.TextField('Descrição do Faturamento', max_length=300, blank=True)
 

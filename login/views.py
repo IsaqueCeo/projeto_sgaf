@@ -27,7 +27,7 @@ def login_usuario(request):
                 messages.info(request, 'Você fez login com sucesso!')
                 return redirect('geral:home')
             else:
-                messages.error(request, 'Usuário ou senha inválidos!')
+                messages.error(request, 'Matrícula ou senha inválidos!')
                 return redirect('usuarios:login')
             
         else:

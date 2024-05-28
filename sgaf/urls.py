@@ -19,8 +19,12 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import home
+from login.views import sair, login_usuario, alterar_senha
 
 urlpatterns = [
+    path('login/', login_usuario, name='login'),
+    path('logout/', sair, name='logout'),
+    path('alterar_senha/', alterar_senha, name='alterar_senha'),
     path('admin/', admin.site.urls),
     path('', home, name='home'),
 ]
