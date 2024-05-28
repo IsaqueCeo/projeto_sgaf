@@ -174,3 +174,46 @@ def criar_usuario_professor(sender, instance, created, **kwargs):
         usuario_professor.save()
         instance.usuario = usuario_professor
         instance.save()
+
+
+
+### Criando tabela de dados pessoais do Aluno     
+        
+@receiver(post_save, sender=Aluno)
+def criar_dados_pessoais_do_aluno(sender, instance, created, **kwargs):
+    if created:
+        dados_aluno = Dadospessoais.objects.create(
+            nome=instance.nome,
+            nome_da_mae=instance.nome_da_mae,
+            data_nascimento=instance.data_nascimento,
+            uf_naturalizado=instance.uf_naturalizado,
+            uf=instance.uf,
+            cep=instance.cep,
+            cidade=instance.cidade,
+            endereco=instance.endereco,
+            bairro=instance.bairro,
+            numero=instance.numero,
+            nacionalidade=instance.nacionalidade,
+            cpf=instance.cpf,
+            rg=instance.rg
+        )
+        dados_aluno.save()
+        instance.dados_pessoais = dados_aluno
+        instance.save()
+
+
+### Criando usuário de login do Aluno 
+
+@receiver(post_save, sender=Aluno)
+def criar_usuario_aluno(sender, instance, created, **kwargs):
+    if created:
+        usuario_aluno = User.objects.create(
+            username=instance.matricula,              
+            email=instance.email, 
+            first_name=instance.nome.split()[0],
+            last_name=' '.join(instance.nome.split()[1:])
+            )
+        usuario_aluno.set_password(instance.cpf)
+        usuario_aluno.save()
+        instance.usuario = usuario_aluno
+        instance.save()
