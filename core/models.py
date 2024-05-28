@@ -397,8 +397,7 @@ class Aluno(models.Model):
     nacionalidade = models.CharField("Nacionalidade", max_length=20, default="Brasileira")
     data_nascimento = models.DateField('Data de Nascimento')
     email = models.EmailField("Email")
-    matricula = models.CharField(max_length=20, unique=True, editable=False)   
-    ano_ingresso = models.DateTimeField(default=timezone.now)
+    matricula = models.CharField(max_length=20, unique=True, editable=False)       
     data_de_ingresso = models.DateTimeField(default=timezone.now)
 
 
@@ -413,7 +412,7 @@ class Aluno(models.Model):
     
     
     def gerar_matricula(self):
-        ano_ingresso = str(self.ano_ingresso)
+        ano_ingresso = str(self.ano_ingresso.year)
         nome_abreviado = self.nome[:3].upper()
                 
         while True:        
