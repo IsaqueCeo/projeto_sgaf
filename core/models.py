@@ -453,6 +453,9 @@ class Nivel(models.Model):
         verbose_name = "Curso"
         verbose_name_plural = "Cursos"  
 
+
+
+
 class Disciplina(models.Model):
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)
     nome = models.CharField("Nome da Disciplina", max_length=100)
