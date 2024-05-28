@@ -1,4 +1,4 @@
-from .models import Setor, Professor, Funcionario
+from .models import Setor, Professor, Funcionario, Empresa
 from django.views.generic import CreateView, ListView
 from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm
 from django.contrib import messages
@@ -44,6 +44,45 @@ def cadastrar_empresa_adm(request):
         form = EmpresaCompletaForm() 
 
     return render(request, 'adm/cadastrar-empresa.html', {'form': form})
+
+
+@user_passes_test(is_superuser)
+def listar_empresas_cadastradas(request):
+    template_name = 'adm/lista_empresas.html' 
+    empresas = Empresa.objects.all()
+    context = {
+        'empresas': empresas,
+    }
+    return render(request, template_name, context)
+
+
+@user_passes_test(is_superuser)
+def detalhar_empresa_cadastrada(request, id):
+    empresa = Empresa.objects.get(id=id)
+    return render(request, 'adm/detalhar_empresa.html', {'empresa':empresa})
+
+
+@user_passes_test(is_superuser)
+def deletar_empresa_cadastrada(request, id):
+    empresa = Empresa.objects.get(id=id)
+    empresa.delete()
+    return redirect('listar-empresas-cadastradas')
+
+
+@user_passes_test(is_superuser)
+def atualizar_empresa_cadastrada(request):
+    empresa = Empresa.objects.get(id=id)
+    form = EmpresaCompletaForm(instance=empresa)
+    if request.method == "POST":
+        form = EmpresaCompletaForm(request.POST, request.FILES, instance=empresa)
+        if form.is_valid():
+            form.save()
+            return redirect("atualizar-empresa-cadastrada", id=id)
+        else:
+            return render(request, 'adm/atualizar_empresa_cadastrada.html', {'form': form})
+    else:
+        return render(request, 'adm/atualizar_empresa_cadastrada.html', {'form': form})
+
 
 
 ###########################################################

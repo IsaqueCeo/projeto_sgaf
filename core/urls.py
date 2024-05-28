@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import novo_setor, listar_setores, atualizar_setor, deletar_setor, detalhar_setor, cadastrar_empresa_adm
+from .views import novo_setor, listar_setores, atualizar_setor, deletar_setor, detalhar_setor, cadastrar_empresa_adm, listar_empresas_cadastradas, atualizar_empresa_cadastrada, detalhar_empresa_cadastrada, deletar_empresa_cadastrada
 
 
 urlpatterns = [
@@ -10,5 +10,9 @@ urlpatterns = [
     path('deletar-setor/<int:id>/', deletar_setor, name='deletar-setor'),
     
     path('cadastrar-empresa/', cadastrar_empresa_adm, name='cadastrar-empresa'),
+    path('listar-empresas-cadastradas/', listar_empresas_cadastradas, name='listar-empresas-cadastradas'),
+    path('atualizar-empresa-cadastrada/<int:id>/', atualizar_empresa_cadastrada, name='atualizar-empresa-cadastrada'),
+    path('detalhar-empresa-cadastrada/<int:id>/', detalhar_empresa_cadastrada, name='detalhar-empresa-cadastrada'),
+    path('deletar-empresa-cadastrada/<int:id>/', deletar_empresa_cadastrada, name='deletar-empresa-cadastrada'),
 
 ]
