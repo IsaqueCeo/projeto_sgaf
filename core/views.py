@@ -26,11 +26,15 @@ from .utils import is_superuser
 
 
 
-###########################################################
-###################### EMPRESA ############################
-###########################################################
+'''
+VIEWS PARA EMPRESAS
+'''
 
 
+'''
+VIEW ADMINISTRATIVA
+Function Based View para criar uma nova empresa na plataforma
+'''
 
 
 @user_passes_test(is_superuser)
@@ -47,6 +51,12 @@ def cadastrar_empresa_adm(request):
     return render(request, 'adm/cadastrar-empresa.html', {'form': form})
 
 
+'''
+VIEW ADMINISTRATIVA
+Function Based View para listar todas as empresas na plataforma
+'''
+
+
 @user_passes_test(is_superuser)
 def listar_empresas_cadastradas(request):
     template_name = 'adm/lista_empresas.html' 
@@ -57,11 +67,22 @@ def listar_empresas_cadastradas(request):
     return render(request, template_name, context)
 
 
+'''
+VIEW ADMINISTRATIVA
+Function Based View para detalhar todas as empresas na plataforma
+'''
+
+
 @user_passes_test(is_superuser)
 def detalhar_empresa_cadastrada(request, id):
     empresa = Empresa.objects.get(id=id)
     return render(request, 'adm/detalhar_empresa.html', {'empresa':empresa})
 
+
+'''
+VIEW ADMINISTRATIVA
+Function Based View para deletar uma empresa na plataforma
+'''
 
 @user_passes_test(is_superuser)
 def deletar_empresa_cadastrada(request, id):
@@ -69,6 +90,11 @@ def deletar_empresa_cadastrada(request, id):
     empresa.delete()
     return redirect('listar-empresas-cadastradas')
 
+
+'''
+VIEW ADMINISTRATIVA
+Function Based View para atualizar uma empresa na plataforma
+'''
 
 @user_passes_test(is_superuser)
 def atualizar_empresa_cadastrada(request, id):
@@ -86,12 +112,14 @@ def atualizar_empresa_cadastrada(request, id):
 
 
 
-###########################################################
-###################### SETOR ##############################
-###########################################################
+'''
+VIEWS PARA SETOR DA EMPRESA
+'''
 
+'''
+Function Based View para criar um novo setor na minha empresa
+'''
 
-#Function Based View para criar um novo setor na minha empresa
 @login_required
 def novo_setor(request):
     if request.method == 'POST':
@@ -107,7 +135,10 @@ def novo_setor(request):
     return render(request, 'empresa/setor.html', {'form': form})
 
 
-#Function Based View para listar todos os setores da minha empresa
+'''
+Function Based View para listar todos os setores na minha empresa
+'''
+
 @login_required
 def listar_setores(request):
     template_name = 'empresa/setores.html'
@@ -119,7 +150,11 @@ def listar_setores(request):
     return render(request, template_name, context)
 
 
-#Function Based View para atualizar um setor da minha empresa
+'''
+Function Based View para atualizar um setor da minha empresa
+'''
+
+
 @login_required
 def atualizar_setor(request, id):
     empresa = request.user.funcionario.empresa
@@ -138,7 +173,10 @@ def atualizar_setor(request, id):
         return render(request, template_name, {'form': form})
 
 
-#Function Based View para deletar um setor da minha empresa
+'''
+Function Based View para deletar um setor da minha empresa
+'''
+
 @login_required
 def deletar_setor(request, id):
     empresa = request.user.funcionario.empresa
@@ -147,7 +185,10 @@ def deletar_setor(request, id):
     return redirect('listar-setores')
 
 
-#Function Based View para detalhar um setor da minha empresa
+'''
+Function Based View para detalhar um setor da minha empresa
+'''
+
 @login_required
 def detalhar_setor(request, id):
     empresa = request.user.funcionario.empresa
@@ -156,9 +197,14 @@ def detalhar_setor(request, id):
 
 
 
-############################################################################
-################################# PROFESSOR ##################################
-############################################################################
+'''
+VIEWS PARA PROFESSOR
+'''
+
+'''
+Function Based View para cadastrar um Professor na minha empresa
+'''
+
 
 @login_required
 def novo_professor(request):
@@ -173,6 +219,10 @@ def novo_professor(request):
     else:
         form = NovoProfessorForm()
         return render(request, 'empresa/novo-professor.html', {'form': form})
+
+'''
+Function Based View para listar todos os Professores na minha empresa
+'''
 
 
 @login_required
