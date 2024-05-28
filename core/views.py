@@ -226,7 +226,7 @@ Function Based View para listar todos os Professores na minha empresa
 
 
 @login_required
-def listar_professor(request):
+def listar_professores(request):
     template_name = 'empresa/listar-professores.html'
     empresa = request.user.funcionario.empresa
     professores = Professor.objects.filter(empresa=empresa)
@@ -327,8 +327,8 @@ def detalhar_professor(request, id):
 
 
 
-############################################################################
-################################## ALUNO ##################################
-############################################################################
-
+'''
+VIEWS PARA ALUNO
+Function Based View para atualizar uma empresa na plataforma
+'''
 

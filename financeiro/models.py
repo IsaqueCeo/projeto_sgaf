@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from core.models import Aluno
 from gestao_escolar.models import Serie
+from datetime import timedelta
 
 
 class Mensalidade(models.Model):    
@@ -44,12 +45,21 @@ class Fatura(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     valor_mensal = models.ForeignKey(Mensalidade, on_delete=models.CASCADE)
     data_emissao = models.DateField(default=timezone.now)
-    data_vencimento = models.DateField()
+    data_vencimento = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=50)
     bolsa = models.ForeignKey(Bolsa, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f'Fatura {self.id} - Aluno: {self.aluno.nome}'
+    
+    def calcular_data_vencimento(self):
+        if not self.data_vencimento:
+            self.data_vencimento = self.data_emissao + timedelta(days=30)
+        
+
+    def save(self, *args, **kwargs):
+        self.calcular_data_vencimento()
+        super().save(*args, **kwargs)
     
 class Pagamento(models.Model):
 
