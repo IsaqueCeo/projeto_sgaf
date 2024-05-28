@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
+from .utils import is_superuser
 
 # Create your views here.
 
@@ -29,8 +30,8 @@ from django.shortcuts import render, redirect
 ###################### EMPRESA ############################
 ###########################################################
 
-def is_superuser(user):
-    return user.is_superuser
+
+
 
 @user_passes_test(is_superuser)
 def cadastrar_empresa_adm(request):
@@ -70,7 +71,7 @@ def deletar_empresa_cadastrada(request, id):
 
 
 @user_passes_test(is_superuser)
-def atualizar_empresa_cadastrada(request):
+def atualizar_empresa_cadastrada(request, id):
     empresa = Empresa.objects.get(id=id)
     form = EmpresaCompletaForm(instance=empresa)
     if request.method == "POST":
