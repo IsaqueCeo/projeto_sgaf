@@ -18,8 +18,11 @@ class Taxa(models.Model):
 
     juros = models.DecimalField('Juros', max_digits=3 ,decimal_places=2)
     multa = models.DecimalField('Multas', max_digits=3 ,decimal_places=2)
-    tipo = models.CharField('Tipo', max_length=50 ,choices=TIPO)
-    valor_bolsa = models.DecimalField('Bolsa', max_digits=3, decimal_places=2 )
+    valor_bolsa = models.DecimalField('Bolsa', max_digits=4, decimal_places=2 )
+    tipo = models.CharField('Tipo da Bolsa', max_length=50 ,choices=TIPO)
+
+
+    
 
 
 class Fatura(models.Model):
