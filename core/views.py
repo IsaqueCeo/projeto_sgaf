@@ -1,6 +1,6 @@
 from .models import Setor, Professor
 from django.views.generic import CreateView, ListView
-from .forms import NovoSetorForm, NovoProfessorForm
+from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -102,7 +102,7 @@ def detalhar_setor(request, id):
 
 
 ############################################################################
-#################################PROFESSOR##################################
+################################# PROFESSOR ##################################
 ############################################################################
 
 @login_required
@@ -160,7 +160,69 @@ def detalhar_professor(request, id):
     return render(request, 'empresa/detalhar-professor.html', {'professores':professores})
 
 
+############################################################################
+################################# FUNCIONÁRIO ###############################
+############################################################################
+
+@login_required
+def novo_professor(request):
+    if request.method == 'POST':
+        form = NovoFuncionario(request.POST)
+        if form.is_valid():
+            professor = form.save(commit=False)
+            professor.empresa = request.user.funcionario.empresa
+            professor.save()
+            messages.success(request, "Professor criado com sucesso!")
+            return redirect('dashboard')
+    else:
+        form = NovoFuncionario()
+        return render(request, 'empresa/novo-professor.html', {'form': form})
 
 
+@login_required
+def listar_professor(request):
+    template_name = 'empresa/listar-professores.html'
+    empresa = request.user.funcionario.empresa
+    professores = Professor.objects.filter(empresa=empresa)
+    context = {
+        'professores': professores,
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+def atualizar_professor(request, id):
+    empresa = request.user.funcionario.empresa
+    professores = Professor.objects.filter(empresa=empresa)
+    form = NovoProfessorForm(instance=professores)
+    template_name = 'empresa/atualizar-professor.html'
+    if request.method == "POST":
+        form = NovoProfessorForm(request.POST, instance=professores)
+        if form.is_valid():
+            form.save()
+            return redirect("atualizar-professor", id=id)
+        else:
+            return render(request, template_name, {'form': form})
+
+@login_required
+def deletar_professor(request, id):
+    empresa = request.user.funcionario.empresa
+    professores = Professor.objects.filter(empresa=empresa)
+    professores.delete()
+    return redirect('listar-professor')
+
+
+@login_required
+def detalhar_professor(request, id):
+    empresa = request.user.funcionario.empresa
+    professores = Professor.objects.filter(empresa=empresa)
+    return render(request, 'empresa/detalhar-professor.html', {'professores':professores})
+
+
+
+
+############################################################################
+################################## ALUNO ##################################
+############################################################################
 
 

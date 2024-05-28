@@ -1,5 +1,5 @@
 from django import forms
-from .models import Setor, Empresa, Professor
+from .models import Setor, Empresa, Professor, Funcionario, Dadospessoais
 
 
 class NovoSetorForm(forms.ModelForm):    
@@ -16,5 +16,17 @@ class LandingPageEmpresaForm(forms.ModelForm):
 
 class NovoProfessorForm(forms.ModelForm):
     class Meta:
-        model: Professor
+        model = Professor
         fields = ['nome', 'telefone', 'cep', 'cidade', 'endereco', 'uf', 'bairro', 'numero', 'email', 'nome_da_mae', 'sexo', 'nacionalidade', 'data_nascimento', 'uf_naturalizado', 'cpf', 'rg', 'numero']
+
+
+class NovoFuncionario(forms.ModelForm):
+    class Meta:
+        model = Funcionario
+        fields = ['nome', 'telefone', 'cep', 'cidade', 'endereco', 'uf', 'bairro', 'numero', 'email', 'nome_da_mae', 'sexo', 'nacionalidade', 'data_nascimento', 'uf_naturalizado', 'cpf', 'rg', 'numero']
+
+
+class DadosPessoaisForm(forms.ModelForm):
+    class Meta:
+        model = Dadospessoais
+        fields = '__all__'
