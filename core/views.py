@@ -1,6 +1,6 @@
 from .models import Setor, Professor, Funcionario, Empresa, Aluno
 from django.views.generic import CreateView, ListView
-from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm
+from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm, FuncionarioCompletoForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -236,6 +236,10 @@ def listar_professores(request):
     return render(request, template_name, context)
 
 
+'''
+Function Based View para atualizar um professor da minha empresa
+'''
+
 @login_required
 def atualizar_professor(request, id):
     empresa = request.user.funcionario.empresa
@@ -250,6 +254,11 @@ def atualizar_professor(request, id):
         else:
             return render(request, template_name, {'form': form})
 
+
+'''
+Function Based View para deletar um professor da minha empresa
+'''
+
 @login_required
 def deletar_professor(request, id):
     empresa = request.user.funcionario.empresa
@@ -257,18 +266,24 @@ def deletar_professor(request, id):
     professor.delete()
     return redirect('listar-professor')
 
+'''
+Function Based View para detalhar um professor da minha empresa
+'''
 
 @login_required
 def detalhar_professor(request, id):
     empresa = request.user.funcionario.empresa
-    professor = Professor.objects.get(id=id)  
-    professor = Professor.objects.get(id=id)
+    professor = Professor.objects.get(empresa=empresa, id=id)  
     return render(request, 'empresa/detalhar-professor.html', {'professor':professor})
 
 
-############################################################################
-################################# FUNCIONÁRIO ###############################
-############################################################################
+'''
+VIEWS PARA FUNCIONÁRIOS DA EMPRESA
+'''
+
+'''
+Function Based View para criar um novo funcionário na minha empresa
+'''
 
 @login_required
 def novo_funcionario(request):
@@ -285,6 +300,10 @@ def novo_funcionario(request):
         return render(request, 'empresa/novo-funcionario.html', {'form': form})
 
 
+'''
+Function Based View para listar funcionários na minha empresa
+'''
+
 @login_required
 def listar_funcionarios(request):
     template_name = 'empresa/listar-funcionarios.html'
@@ -296,40 +315,59 @@ def listar_funcionarios(request):
     return render(request, template_name, context)
 
 
+'''
+Function Based View para atualizar funcionário na minha empresa
+'''
+
 @login_required
 def atualizar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
-    professores = Funcionario.objects.filter(empresa=empresa)
-    form = NovoProfessorForm(instance=professores)
-    template_name = 'empresa/atualizar-professor.html'
+    funcionario = Funcionario.objects.filter(empresa=empresa)
+    form = FuncionarioCompletoForm(instance=funcionario)
+    template_name = 'empresa/atualizar-funcionario.html'
     if request.method == "POST":
-        form = NovoProfessorForm(request.POST, instance=professores)
+        form = FuncionarioCompletoForm(request.POST, instance=funcionario)
         if form.is_valid():
             form.save()
-            return redirect("atualizar-professor", id=id)
+            return redirect("atualizar-funcionario", id=id)
         else:
             return render(request, template_name, {'form': form})
+
+
+'''
+Function Based View para deletar funcionário na minha empresa
+'''
 
 @login_required
 def deletar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
     funcionario = Funcionario.objects.get(empresa=empresa, id=id)
     funcionario.delete()
-    return redirect('listar-professor')
+    return redirect('listar-funcionarios-da-empresa')
+
+
+
+'''
+Function Based View para detalhar funcionário na minha empresa
+'''
 
 
 @login_required
-def detalhar_professor(request, id):
+def detalhar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
-    return render(request, 'empresa/detalhar-professor.html', {'professores':professores})
+    funcionario = Professor.objects.filter(empresa=empresa)
+    return render(request, 'empresa/detalhar-funcionario.html', {'funcionario':funcionario})
 
 
 
 
-############################################################################
-################################## ALUNO ##################################
-############################################################################
+'''
+VIEWS PARA ALUNO
+'''
+
+'''
+Function Based View para cadastrar um Aluno na minha empresa
+'''
 
 @login_required
 def criar_aluno(request):
