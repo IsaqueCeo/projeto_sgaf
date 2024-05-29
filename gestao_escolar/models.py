@@ -21,7 +21,7 @@ class Serie(models.Model):
         ('T', 'Vespertino'),
         ('N', 'Noturno'),
     )
-
+    instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE)
     serie = models.CharField("Série da Turma", choices=SERIE, max_length=3)
     turno = models.CharField("Turno da Turma", choices=TURNO, max_length=1)
 
@@ -78,7 +78,8 @@ class Aula(models.Model):
         ('CO', 'Concluída'),
         ('CA', 'Cancelada'),
     )
-
+    
+    instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE)
     data = models.DateField("Data da Aula")
     horario_inicio = models.TimeField("Horário de Início", blank=True, null=True)
     horario_termino = models.TimeField("Horário de Término", blank=True, null=True)
@@ -95,6 +96,7 @@ class Aula(models.Model):
         verbose_name_plural = "Aulas"
         
 class FrequenciaDoAluno(models.Model):
+    instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE)
     aula = models.ForeignKey(Aula, on_delete=models.CASCADE, verbose_name="Aula")
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
     presenca = models.BooleanField("Presença do Aluno", default=True)
