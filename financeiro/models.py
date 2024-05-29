@@ -46,11 +46,10 @@ class Fatura(models.Model):
     valor_mensal = models.ForeignKey(Mensalidade, on_delete=models.CASCADE)
     data_emissao = models.DateField(default=timezone.now)
     data_vencimento = models.DateField(blank=True, null=True)
-    status = models.CharField(max_length=50)
     bolsa = models.ForeignKey(Bolsa, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return f'Fatura {self.id} - Aluno: {self.aluno.nome}'
+        return f'Aluno: {self.aluno.nome}'
     
     def calcular_data_vencimento(self):
         if not self.data_vencimento:
@@ -71,8 +70,22 @@ class Pagamento(models.Model):
 
 
     boleto = models.ForeignKey(Fatura, on_delete=models.CASCADE)
-    pago = models.BooleanField(default=False)
     status = models.CharField('Status',max_length=50 , choices=STATUS)
+    pago = models.BooleanField(default=False)
+
+    def status_change(self):
+
+        if self.status == '3':
+            self.pago = True
+    
+    def save(self, *args, **kwargs):
+        self.status_change()
+        super().save(*args, **kwargs) 
+
+
+    def __str__(self):
+
+        return f'{self.boleto.aluno} - {self.status}'
 
 class Despesa(models.Model):
 
@@ -92,6 +105,10 @@ class Despesa(models.Model):
     descricao = models.TextField('Descrição do Pagamento', max_length=300, blank=True)
     metodo = models.CharField('Método de Pagamento',max_length=50 ,blank=True)
 
+    def __str__(self):
+        
+        return f'{self.nome} - {self.valor}'
+
 
 class Faturamento(models.Model):
     CATEGORIA = (
@@ -108,6 +125,10 @@ class Faturamento(models.Model):
     valor = models.DecimalField('Valor',decimal_places=2, max_digits=5)
     data  = models.DateField('Data do Fautramento', auto_now_add=True)
     descricao = models.TextField('Descrição do Faturamento', max_length=300, blank=True)
+
+    def __str__(self):
+
+        return f'{self.nome} - {self.valor}'
 
 
 

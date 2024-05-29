@@ -15,9 +15,9 @@ class MensalidadeAdmin(admin.ModelAdmin):
     list_filter = ('serie',)
 
 class FaturaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'aluno', 'valor_mensal', 'data_emissao', 'data_vencimento', 'status')
-    search_fields = ('aluno__nome', 'status')
-    list_filter = ('status', 'data_emissao', 'data_vencimento')
+    list_display = ('id', 'aluno', 'valor_mensal', 'data_emissao', 'data_vencimento')
+    search_fields = ('aluno__nome',)
+    list_filter = ('data_emissao', 'data_vencimento')
 
     def get_valor_total(self, obj):
         return obj.valor_total
