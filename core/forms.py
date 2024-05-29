@@ -25,6 +25,11 @@ class NovoProfessorForm(forms.ModelForm):
         fields = ['nome', 'telefone', 'cep', 'cidade', 'endereco', 'uf', 'bairro', 'numero', 'email', 'nome_da_mae', 'sexo', 'nacionalidade', 'data_nascimento', 'uf_naturalizado', 'cpf', 'rg', 'numero']
 
 
+class ProfessorCompletoForm(forms.ModelForm):
+    class Meta:
+        model = Professor
+        fields = '__all__'
+
 class NovoFuncionario(forms.ModelForm):
     class Meta:
         model = Funcionario

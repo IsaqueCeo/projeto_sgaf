@@ -1,6 +1,6 @@
 from .models import Setor, Professor, Funcionario, Empresa, Aluno
 from django.views.generic import CreateView, ListView
-from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm, FuncionarioCompletoForm
+from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm, ProfessorCompletoForm, FuncionarioCompletoForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,21 +9,6 @@ from django.shortcuts import render, redirect
 from .utils import is_superuser
 
 # Create your views here.
-
-#Class Based View para criar um novo setor
-# class NovoSetor(LoginRequiredMixin, CreateView):
-#     model = Setor
-#     template_name = 'empresa/setor.html'
-#     form_class = NovoSetorForm
-    
-#     def form_valid(self, form):
-#         form.instance.empresa = self.request.user.funcionario.empresa
-#         return super().form_valid(form)
-    
-#     def get_success_url(self):
-#         messages.add_message(self.request, messages.SUCCESS, "Setor criado com sucesso!")
-#         return reverse('home')
-
 
 
 '''
@@ -244,10 +229,10 @@ Function Based View para atualizar um professor da minha empresa
 def atualizar_professor(request, id):
     empresa = request.user.funcionario.empresa
     professores = Professor.objects.filter(empresa=empresa)
-    form = NovoProfessorForm(instance=professores)
+    form = ProfessorCompletoForm(instance=professores)
     template_name = 'empresa/atualizar-professor.html'
     if request.method == "POST":
-        form = NovoProfessorForm(request.POST, instance=professores)
+        form = ProfessorCompletoForm(request.POST, instance=professores)
         if form.is_valid():
             form.save()
             return redirect("atualizar-professor", id=id)
@@ -372,34 +357,41 @@ Function Based View para cadastrar um Aluno na minha empresa
 @login_required
 def criar_aluno(request):
     if request.method == 'POST':
-        form = Aluno(request.POST)
+        form = AlunoForm(request.POST)
         if form.is_valid():
             aluno = form.save(commit=False)
-            aluno.empresa = request.user.funcionario.empresa
+            aluno.instituicao = request.user.funcionario.empresa
             aluno.save()
             messages.success(request, "Aluno criado com sucesso!")
             return redirect('dashboard')
-        else:
-            form = Aluno()
-            return render(request, 'criar_aluno.html', {'form': form})
+    else:
+        form = AlunoForm()
         
+    return render(request, 'empresa/criar_aluno.html', {'form': form})
+
+'''
+Function Based View para listar todos os alunos na minha empresa
+'''    
 
 @login_required
 def listar_aluno(request):
-    template_name = 'criar_aluno.html'
+    template_name = 'empresa/listar_alunos.html'
     empresa = request.user.aluno.empresa
-    alunos = Aluno.objects.filter(empresa=empresa)
+    alunos = Aluno.objects.filter(instituicao=empresa)
     context = {
         'alunos':alunos,
         }
     return render(request, template_name, context)
 
+'''
+Function Based View para detalhar aluno na minha empresa
+'''   
 
 @login_required
 def detalhar_aluno(request, id):
     empresa = request.user.aluno.empresa
     aluno = Aluno.objects.filter(empresa=empresa)
-    return render(request, 'detalhar-aluno.html', {'aluno': aluno})
+    return render(request, 'empresa/detalhar-aluno.html', {'aluno': aluno})
 
 
 
