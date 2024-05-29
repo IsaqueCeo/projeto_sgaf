@@ -234,7 +234,7 @@ class Professor(models.Model):
     data_nascimento = models.DateField('Data de Nascimento')
     email = models.EmailField("Email")
     matricula = models.CharField(max_length=20, unique=True, editable=False)   
-    ano_ingresso = models.DateTimeField(default=timezone.now().year)
+    ano_ingresso = models.DateTimeField(default=timezone.now)
 
 
     @property
@@ -248,7 +248,7 @@ class Professor(models.Model):
     
     
     def gerar_matricula(self):
-        ano_ingresso = str(self.ano_ingresso)
+        ano_ingresso = str(self.ano_ingresso.year)
         setor_abreviado = self.nome[:3].upper()
         numeros_aleatorios = ''.join(random.choices('0123456789', k=4))
         nome_abreviado = self.nome[:2].upper()
@@ -314,7 +314,6 @@ class Funcionario(models.Model):
     data_nascimento = models.DateField('Data de Nascimento')
     email = models.EmailField("Email")
     matricula = models.CharField("Matrícula", max_length=20, unique=True, editable=False)    
-    ano_ingresso = models.DateTimeField(default=timezone.now().year)
     data_de_ingresso = models.DateTimeField(default=timezone.now)
     
     @property
@@ -327,7 +326,7 @@ class Funcionario(models.Model):
         return self.nome
     
     def gerar_matricula(self):
-        ano_ingresso = str(self.ano_ingresso)
+        ano_ingresso = str(self.ano_ingresso.year)
         setor_abreviado = self.setor.nome[:3].upper()
         nome_abreviado = self.nome[:2].upper()
         
@@ -384,11 +383,11 @@ class Aluno(models.Model):
     nome_da_mae = models.CharField("Nome da Mãe", max_length=100)
     nome_do_pai = models.CharField("Nome do Pai", max_length=100, blank=True, null=True)
     sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
-    uf_naturalizado = models.CharField('Estado', max_length=2, choices=ESTADO)
+    uf_naturalizado = models.CharField('Estado de Nascimento', max_length=2, choices=ESTADO)
     cpf = models.CharField("CPF", max_length=11, unique=True)
     rg = models.CharField("RG", max_length=20, unique=True)
     cep = models.CharField("CEP", max_length=8)
-    uf = models.CharField("UF", max_length=2, choices=ESTADO)
+    uf = models.CharField("UF de Residência", max_length=2, choices=ESTADO)
     cidade = models.CharField('Cidade', max_length=50)
     endereco = models.CharField("Nome da Rua/Avenida", max_length=50)
     bairro = models.CharField("Bairro", max_length=25)
@@ -397,9 +396,9 @@ class Aluno(models.Model):
     nacionalidade = models.CharField("Nacionalidade", max_length=20, default="Brasileira")
     data_nascimento = models.DateField('Data de Nascimento')
     email = models.EmailField("Email")
-    matricula = models.CharField(max_length=20, unique=True, editable=False)   
-    ano_ingresso = models.DateTimeField(default=timezone.now().year)
+    matricula = models.CharField(max_length=20, unique=True, editable=False)       
     data_de_ingresso = models.DateTimeField(default=timezone.now)
+
 
 
     @property
@@ -413,7 +412,7 @@ class Aluno(models.Model):
     
     
     def gerar_matricula(self):
-        ano_ingresso = str(self.ano_ingresso)
+        ano_ingresso = str(self.data_de_ingresso.year)
         nome_abreviado = self.nome[:3].upper()
                 
         while True:        
@@ -454,6 +453,9 @@ class Nivel(models.Model):
     class Meta:
         verbose_name = "Curso"
         verbose_name_plural = "Cursos"  
+
+
+
 
 class Disciplina(models.Model):
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)

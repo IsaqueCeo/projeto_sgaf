@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Pagamento, Mensalidade, Fatura, Taxa, Despesa, Faturamento
+    Pagamento, Mensalidade, Fatura, Taxa, Despesa, Faturamento, Bolsa
 )
 # Register your models here.
 class PagamentoAdmin(admin.ModelAdmin):
@@ -25,7 +25,10 @@ class FaturaAdmin(admin.ModelAdmin):
 
 
 class TaxaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'juros', 'multa', 'tipo', 'valor_bolsa')
+    list_display = ('id', 'juros', 'multa')
+
+class BolsaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'valor_bolsa', 'tipo')
 
 
 
@@ -57,3 +60,4 @@ admin.site.register(Mensalidade, MensalidadeAdmin)
 admin.site.register(Taxa, TaxaAdmin)
 admin.site.register(Despesa, DespesaAdmin)
 admin.site.register(Faturamento, FaturamentoAdmin)
+admin.site.register(Bolsa,BolsaAdmin)
