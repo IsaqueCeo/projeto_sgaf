@@ -1,6 +1,6 @@
-from .models import Setor, Professor, Funcionario, Empresa
+from .models import Setor, Professor, Funcionario, Empresa, Aluno
 from django.views.generic import CreateView, ListView
-from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm
+from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -330,5 +330,43 @@ def detalhar_professor(request, id):
 ############################################################################
 ################################## ALUNO ##################################
 ############################################################################
+
+@login_required
+def criar_aluno(request):
+    if request.method == 'POST':
+        form = Aluno(request.POST)
+        if form.is_valid():
+            aluno = form.save(commit=False)
+            aluno.empresa = request.user.funcionario.empresa
+            aluno.save()
+            messages.success(request, "Aluno criado com sucesso!")
+            return redirect('dashboard')
+        else:
+            form = Aluno()
+            return render(request, 'criar_aluno.html', {'form': form})
+        
+
+@login_required
+def listar_aluno(request):
+    template_name = 'criar_aluno.html'
+    empresa = request.user.aluno.empresa
+    alunos = Aluno.objects.filter(empresa=empresa)
+    context = {
+        'alunos':alunos,
+        }
+    return render(request, template_name, context)
+
+
+@login_required
+def detalhar_aluno(request, id):
+    empresa = request.user.aluno.empresa
+    aluno = Aluno.objects.filter(empresa=empresa)
+    return render(request, 'detalhar-aluno.html', {'aluno': aluno})
+
+
+
+
+
+
 
 
