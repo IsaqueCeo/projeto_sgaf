@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 import string
 from django.contrib.auth.models import User
-import random
+import random, re
 from django.utils import timezone
 from datetime import date
 from validate_docbr import CPF, CNPJ
@@ -128,7 +128,7 @@ class Empresa(models.Model):
     razao_social = models.CharField("Nome da Razão Social", max_length=50, blank=True, null=True)
     nome_fantasia = models.CharField("Nome Fantasia", max_length=50, blank=True, null=True)
     natureza_juridica = models.CharField("Natureza Jurídica", max_length=70, blank=True, null=True)
-    cnpj = models.CharField("CNPJ", max_length=14, unique=True) 
+    cnpj = models.CharField("CNPJ", max_length=18, unique=True) 
     email = models.EmailField("Email")
     telefone = models.CharField("Telefone", max_length=11)
     cep = models.CharField("CEP", max_length=8)
@@ -153,6 +153,7 @@ class Empresa(models.Model):
         verbose_name_plural = "Empresas"
 
     def validate_cnpj(self):
+        self.cnpj = re.sub(r'\D', '', self.cnpj)
         cnpj = CNPJ()
         if not cnpj.validate(self.cnpj):
             raise ValidationError('CNPJ inválido!')
@@ -221,7 +222,7 @@ class Professor(models.Model):
     nome_do_pai = models.CharField("Nome do Pai", max_length=100, blank=True, null=True)
     sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
     uf_naturalizado = models.CharField('Estado', max_length=2, choices=ESTADO)
-    cpf = models.CharField("CPF", max_length=11, unique=True)
+    cpf = models.CharField("CPF", max_length=14, unique=True)
     rg = models.CharField("RG", max_length=20, unique=True)
     cep = models.CharField("CEP", max_length=8)
     uf = models.CharField("UF", max_length=2, choices=ESTADO)
@@ -257,6 +258,7 @@ class Professor(models.Model):
     
     
     def validate_cpf(self):
+        self.cpf = re.sub(r'\D', '', self.cpf)
         cpf = CPF()
         if not cpf.validate(self.cpf):
             raise ValidationError(f'CPF inválido!')
@@ -302,7 +304,7 @@ class Funcionario(models.Model):
     nome_do_pai = models.CharField("Nome do Pai", max_length=100, blank=True, null=True)
     sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
     uf_naturalizado = models.CharField('Estado', max_length=2, choices=ESTADO)
-    cpf = models.CharField("CPF", max_length=11, unique=True)
+    cpf = models.CharField("CPF", max_length=14, unique=True)
     rg = models.CharField("RG", max_length=20, unique=True)
     cep = models.CharField("CEP", max_length=8)
     uf = models.CharField("UF", max_length=2, choices=ESTADO)
@@ -339,9 +341,10 @@ class Funcionario(models.Model):
         self.matricula = matricula
 
     def validate_cpf(self):
+        self.cpf = re.sub(r'\D', '', self.cpf)
         cpf = CPF()
         if not cpf.validate(self.cpf):
-            raise ValidationError('CPF inválido!')
+            raise ValidationError(f'CPF inválido!')
 
     def save(self, *args, **kwargs):
         if not self.matricula:
@@ -384,7 +387,7 @@ class Aluno(models.Model):
     nome_do_pai = models.CharField("Nome do Pai", max_length=100, blank=True, null=True)
     sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
     uf_naturalizado = models.CharField('Estado de Nascimento', max_length=2, choices=ESTADO)
-    cpf = models.CharField("CPF", max_length=11, unique=True)
+    cpf = models.CharField("CPF", max_length=14, unique=True)
     rg = models.CharField("RG", max_length=20, unique=True)
     cep = models.CharField("CEP", max_length=8)
     uf = models.CharField("UF de Residência", max_length=2, choices=ESTADO)
@@ -424,6 +427,7 @@ class Aluno(models.Model):
         self.matricula = matricula
     
     def validate_cpf(self):
+        self.cpf = re.sub(r'\D', '', self.cpf)
         cpf = CPF()
         if not cpf.validate(self.cpf):
             raise ValidationError(f'CPF inválido!')
