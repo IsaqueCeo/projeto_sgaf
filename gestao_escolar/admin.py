@@ -19,7 +19,11 @@ class AulaAdmin(admin.ModelAdmin):
     list_editable = ["status"]
     list_per_page = 10
 
-admin.site.register(Serie)
+
+@admin.register(Serie)
+class SerieAdmin(admin.ModelAdmin):
+    list_display = ["id", "serie", "turno"]
+    list_display_links = ["id", "serie", "turno"]
 
     
 @admin.register(FrequenciaDoAluno)

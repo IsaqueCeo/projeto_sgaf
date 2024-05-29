@@ -5,15 +5,15 @@ from .utils import calcular_media_bimestre
 
 class Serie(models.Model):
     SERIE = (
-        ('F11', '1º Ano'),
-        ('F12', '2º Ano'),
-        ('F13', '3º Ano'),
-        ('F14', '4º Ano'),
-        ('F15', '5º Ano'),
-        ('F26', '6º Ano'),
-        ('F27', '7º Ano'),
-        ('F28', '8º Ano'),
-        ('F29', '9º Ano'),
+        ('F11', '1º Ano do Fundamental I'),
+        ('F12', '2º Ano do Fundamental I'),
+        ('F13', '3º Ano do Fundamental I'),
+        ('F14', '4º Ano do Fundamental I'),
+        ('F15', '5º Ano do Fundamental I'),
+        ('F26', '6º Ano do Fundamental II'),
+        ('F27', '7º Ano do Fundamental II'),
+        ('F28', '8º Ano do Fundamental II'),
+        ('F29', '9º Ano do Fundamental II'),
     )
     
     TURNO = (
