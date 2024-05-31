@@ -445,29 +445,13 @@ class Aluno(models.Model):
 
 
 
-class Nivel(models.Model):
-    instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)
-    nivel = models.CharField("Nivel de Ensino", max_length=30)
-    resumo_mec = models.TextField("Observações do MEC")
-    observacoes = models.TextField("Outras Observações")
-    
-    def __str__(self):
-        return self.nivel
-    
-    class Meta:
-        verbose_name = "Curso"
-        verbose_name_plural = "Cursos"  
-
-
-
 
 class Disciplina(models.Model):
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)
     nome = models.CharField("Nome da Disciplina", max_length=100)
     descricao = models.TextField("Descrição da Disciplina", blank=True, null=True)
     carga_horaria = models.PositiveIntegerField("Carga Horária")
-    nivel = models.ForeignKey(Nivel, on_delete=models.CASCADE, verbose_name="Nível da Disciplina")
-    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="Professor Responsável")
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="Professor Responsável", blank=True, null=True)
     material_didatico = models.TextField("Material Didático", blank=True, null=True, help_text="Liste os materiais didáticos recomendados")
     ementa = models.TextField("Ementa da Disciplina", blank=True, null=True, help_text="Conteúdo programático da disciplina")
     bibliografia_basica = models.TextField("Bibliografia Básica", blank=True, null=True)

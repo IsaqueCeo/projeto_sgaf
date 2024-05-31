@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Empresa, Setor, Funcionario, Aluno, Dadospessoais, Aluno, Nivel, SaladeAula, Disciplina, Professor
+from .models import Empresa, Setor, Funcionario, Aluno, Dadospessoais, Aluno, SaladeAula, Disciplina, Professor
  
 # Register your models here.
 
@@ -51,12 +51,6 @@ class DadospessoaisAdmin(admin.ModelAdmin):
     list_per_page = 10
     ordering = ['nome']
 
-@admin.register(Nivel)
-class NivelAdmin(admin.ModelAdmin):
-    list_display = ["id", "nivel", ]
-    list_per_page = 10
-    list_display_links = ["id", "nivel"]
-    
 @admin.register(Disciplina)
 class DisciplinaAdmin(admin.ModelAdmin):
     list_display = ["id", "nome", "carga_horaria", "professor", "ativo"]

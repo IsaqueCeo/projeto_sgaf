@@ -1,5 +1,5 @@
 from django import forms
-from .models import Setor, Empresa, Professor, Funcionario, Dadospessoais, Aluno
+from .models import Setor, Empresa, Professor, Funcionario, Dadospessoais, Aluno, Disciplina, SaladeAula
 
 
 class NovoSetorForm(forms.ModelForm):    
@@ -52,3 +52,30 @@ class AlunoForm(forms.ModelForm):
     class Meta:
         model = Aluno
         fields = ['nome', 'telefone', 'sexo', 'endereco', 'cep', 'uf', 'numero', 'bairro', 'cidade']
+        
+class AlunoCompletoForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = '__all__'
+
+
+class DisciplinaForm(forms.ModelForm):
+    class Meta:
+        model = Disciplina
+        fields = ['nome', 'descricao', 'carga_horaria', 'professor', 'material_didatico', 'ementa', 'bibliografia_basica', 'bibliografia_complementar', 'ativo']
+        
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        if request:
+            empresa = request.user.funcionario.empresa
+            super().__init__(*args, **kwargs)
+            self.fields['professor'].queryset = Professor.objects.filter(instituicao=empresa)
+            
+            
+class SalaDeAulaForm(forms.ModelForm):
+    class Meta:
+        model = SaladeAula
+        fields = ['numero', 'capacidade', 'andar', 'recursos_tecnologicos', 'recursos_didaticos', 'acessibilidade', 'estado_conservacao', 'observacoes', 'foto', 'data_de_inspecao']
+        
+        
+

@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import Empresa, Nivel, Disciplina, Aluno, SaladeAula
+from core.models import Empresa, Disciplina, Aluno, SaladeAula
 from .utils import calcular_media_bimestre
 # Create your models here.
 
@@ -24,6 +24,8 @@ class Serie(models.Model):
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE)
     serie = models.CharField("Série da Turma", choices=SERIE, max_length=3)
     turno = models.CharField("Turno da Turma", choices=TURNO, max_length=1)
+    resumo_mec = models.TextField("Observações do MEC")
+    observacoes = models.TextField("Outras Observações")
 
     def __str__(self):
         return f"{self.serie} -  {self.turno}"
@@ -54,7 +56,6 @@ class Turma(models.Model):
     )
     
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE)
-    nivel = models.ForeignKey(Nivel, on_delete=models.CASCADE, verbose_name="Nível da Série")
     disciplinas = models.ManyToManyField(Disciplina, related_name='disciplinas', verbose_name="Disciplinas")
     ano_letivo = models.PositiveSmallIntegerField("Ano Letivo")
     nome_turma = models.CharField("Nome da Turma", choices=TIPO_TURMA, max_length=1)

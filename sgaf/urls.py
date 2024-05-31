@@ -23,6 +23,7 @@ from login.views import sair, login_usuario, alterar_senha
 
 urlpatterns = [
     path('gestao/', include('core.urls')),
+    path('escola/', include('gestao_escolar.urls')),
     path('login/', login_usuario, name='login'),
     path('logout/', sair, name='logout'),
     path('alterar_senha/', alterar_senha, name='alterar_senha'),
