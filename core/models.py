@@ -327,7 +327,7 @@ class Funcionario(models.Model):
         return self.nome
     
     def gerar_matricula(self):
-        ano_ingresso = str(self.ano_ingresso.year)
+        ano_ingresso = str(self.data_de_ingresso.year)
         setor_abreviado = self.setor.nome[:3].upper()
         nome_abreviado = self.nome[:2].upper()
         
