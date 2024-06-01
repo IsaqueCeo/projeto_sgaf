@@ -25,6 +25,7 @@ urlpatterns = [
     path('gestao/', include('core.urls')),
     path('escola/', include('gestao_escolar.urls')),
     path('aluno/', include('portal_do_aluno.urls')),
+    path('professor/', include('portal_do_professor.urls')),
     path('login/', login_usuario, name='login'),
     path('dashboard/', dashboard, name='dashboard_empresa'),
     path('logout/', sair, name='logout'),
