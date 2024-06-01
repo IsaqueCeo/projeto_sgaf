@@ -14,7 +14,7 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 @admin.register(Setor)
 class SetorAdmin(admin.ModelAdmin):
-    list_display = ["id", "empresa", "nome", "telefone"]
+    list_display = ["id", "empresa", "nome", "telefone", "codigo"]
     list_display_links = [ "empresa", "nome"]
     search_fields = ["nome"]
     list_per_page = 10
