@@ -457,11 +457,12 @@ class Disciplina(models.Model):
         ('F27', '7º Ano do Fundamental II'),
         ('F28', '8º Ano do Fundamental II'),
         ('F29', '9º Ano do Fundamental II'),
+        ('OUT', 'Outro Nível de Ensino'),
     )    
     
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)
     nome = models.CharField("Nome da Disciplina", max_length=100)
-    serie = models.CharField("Série da Turma", choices=SERIE, max_length=3)
+    serie = models.CharField("Série da Turma", choices=SERIE, max_length=3, default="OUT")
     descricao = models.TextField("Descrição da Disciplina", blank=True, null=True)
     carga_horaria = models.PositiveIntegerField("Carga Horária")
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="Professor Responsável", blank=True, null=True)
