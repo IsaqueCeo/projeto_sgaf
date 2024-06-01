@@ -1,13 +1,12 @@
 from .models import Setor, Professor, Funcionario, Empresa, Aluno, Disciplina, SaladeAula
-from django.views.generic import CreateView, ListView
 from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm, ProfessorCompletoForm, FuncionarioCompletoForm
 from .forms import AlunoCompletoForm, DisciplinaForm, SalaDeAulaForm
 from django.contrib import messages
-from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .utils import is_superuser
+from rolepermissions.roles import AbstractUserRole
+from rolepermissions.decorators  import has_permission_decorator
 
 # Create your views here.
 
@@ -111,6 +110,7 @@ Function Based View para criar um novo setor na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('cadastrar_setor')
 def novo_setor(request):
     if request.method == 'POST':
         form = NovoSetorForm(request.POST)
@@ -130,6 +130,7 @@ Function Based View para listar todos os setores na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('ver_setores')
 def listar_setores(request):
     template_name = 'empresa/setores.html'
     empresa = request.user.funcionario.empresa
@@ -146,6 +147,7 @@ Function Based View para atualizar um setor da minha empresa
 
 
 @login_required
+@has_permission_decorator('atualizar_setor')
 def atualizar_setor(request, id):
     empresa = request.user.funcionario.empresa
     setor = get_object_or_404(Setor, id=id, empresa=empresa)
@@ -169,6 +171,7 @@ Function Based View para deletar um setor da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('deletar_setor')
 def deletar_setor(request, id):
     empresa = request.user.funcionario.empresa
     setor = get_object_or_404(Setor, id=id, empresa=empresa)
@@ -181,6 +184,7 @@ Function Based View para detalhar um setor da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('detalhar_setor')
 def detalhar_setor(request, id):
     empresa = request.user.funcionario.empresa
     setor = get_object_or_404(Setor, id=id, empresa=empresa)    
@@ -198,6 +202,7 @@ Function Based View para cadastrar um Professor na minha empresa
 
 
 @login_required
+@has_permission_decorator('novo_professor')
 def novo_professor(request):
     if request.method == 'POST':
         form = NovoProfessorForm(request.POST)
@@ -217,6 +222,7 @@ Function Based View para listar todos os Professores na minha empresa
 
 
 @login_required
+@has_permission_decorator('listar_professores')
 def listar_professores(request):
     template_name = 'empresa/listar-professores.html'
     empresa = request.user.funcionario.empresa
@@ -232,6 +238,7 @@ Function Based View para atualizar um professor da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('atualizar_professor')
 def atualizar_professor(request, id):
     empresa = request.user.funcionario.empresa
     professor = get_object_or_404(Professor, id=id, empresa=empresa)
@@ -253,6 +260,7 @@ Function Based View para deletar um professor da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('deletar_professor')
 def deletar_professor(request, id):
     empresa = request.user.funcionario.empresa
     professor = get_object_or_404(Professor, empresa=empresa, id=id)    
@@ -265,6 +273,7 @@ Function Based View para detalhar um professor da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('detalhar_professor')
 def detalhar_professor(request, id):
     empresa = request.user.funcionario.empresa
     professor = Professor.objects.get(empresa=empresa, id=id)  
@@ -280,6 +289,7 @@ Function Based View para criar um novo funcionário na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('novo_funcionario')
 def novo_funcionario(request):
     if request.method == 'POST':
         form = NovoFuncionario(request.POST)
@@ -299,6 +309,7 @@ Function Based View para listar disciplinas na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('listar_funcionarios')
 def listar_funcionarios(request):
     template_name = 'empresa/listar-funcionarios.html'
     empresa = request.user.funcionario.empresa
@@ -314,6 +325,7 @@ Function Based View para atualizar funcionário na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('atualizar_funcionario')
 def atualizar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
     
@@ -339,6 +351,7 @@ Function Based View para deletar funcionário na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('deletar_funcionario')
 def deletar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
     funcionario = get_object_or_404(Funcionario, empresa=empresa, id=id)
@@ -354,6 +367,7 @@ Function Based View para detalhar funcionário na minha empresa
 
 
 @login_required
+@has_permission_decorator('detalhar_funcionario')
 def detalhar_funcionario(request, id):
     empresa = request.user.funcionario.empresa
     funcionario = get_object_or_404(Funcionario, empresa=empresa, id=id)
@@ -371,6 +385,7 @@ Function Based View para cadastrar um Aluno na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('criar_aluno')
 def criar_aluno(request):
     if request.method == 'POST':
         form = AlunoForm(request.POST)
@@ -389,6 +404,7 @@ Function Based View para listar todos os alunos na minha empresa
 '''    
 
 @login_required
+@has_permission_decorator('listar_alunos')
 def listar_alunos(request):
     template_name = 'empresa/listar_alunos.html'
     empresa = request.user.funcionario.empresa
@@ -403,6 +419,7 @@ Function Based View para detalhar aluno na minha empresa
 '''   
 
 @login_required
+@has_permission_decorator('detalhar_aluno')
 def detalhar_aluno(request, id):
     empresa = request.user.aluno.empresa
     aluno = get_object_or_404(Aluno, instituicao=empresa, id=id)
@@ -414,6 +431,7 @@ Function Based View para atualizar aluno na minha empresa
 '''   
 
 @login_required
+@has_permission_decorator('atualizar_aluno')
 def atualizar_aluno(request, id):
     empresa = request.user.funcionario.empresa    
     aluno = get_object_or_404(Aluno, id=id, instituicao=empresa)
@@ -437,6 +455,7 @@ Function Based View para deletar aluno na minha empresa
 '''   
     
 @login_required
+@has_permission_decorator('deletar_aluno')
 def deletar_aluno(request, id):
     empresa = request.user.funcionario.empresa
     aluno = get_object_or_404(Aluno, instituicao=empresa, id=id)
@@ -456,6 +475,7 @@ Function Based View para criar uma nova Disciplina na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('criar_disciplina')
 def criar_disciplina(request):
     if request.method == 'POST':
         form = DisciplinaForm(request.POST, request=request)
@@ -475,6 +495,7 @@ Function Based View para listar disciplinas na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('listar_disciplinas')
 def listar_disciplinas(request):
     template_name = 'empresa/listar-disciplinas.html'
     empresa = request.user.funcionario.empresa
@@ -490,6 +511,7 @@ Function Based View para deletar disciplina na minha empresa
 '''   
     
 @login_required
+@has_permission_decorator('deletar_disciplina')
 def deletar_disciplina(request, id):
     empresa = request.user.funcionario.empresa
     disciplina = get_object_or_404(Disciplina, instituicao=empresa, id=id)
@@ -502,6 +524,7 @@ Function Based View para detalhar Disciplina na minha empresa
 '''   
 
 @login_required
+@has_permission_decorator('detalhar_disciplina')
 def detalhar_disciplina(request, id):
     empresa = request.user.funcionario.empresa
     disciplina = get_object_or_404(Disciplina, instituicao=empresa, id=id)
@@ -513,6 +536,7 @@ Function Based View para atualizar aluno na minha empresa
 '''   
 
 @login_required
+@has_permission_decorator('atualizar_disciplina')
 def atualizar_disciplina(request, id):
     empresa = request.user.funcionario.empresa    
     disciplina = get_object_or_404(Disciplina, id=id, instituicao=empresa)
@@ -535,7 +559,8 @@ def atualizar_disciplina(request, id):
 Function Based View para ativar uma disciplina na minha empresa
 '''
 
-    
+@login_required
+@has_permission_decorator('ativar_disciplina') 
 def ativar_disciplina(request, id):
     empresa = request.user.funcionario.empresa   
     disciplina = get_object_or_404(Disciplina, id=id, instituicao=empresa)
@@ -551,7 +576,8 @@ def ativar_disciplina(request, id):
 '''
 Function Based View para desativar uma disciplina na minha empresa
 '''
-
+@login_required
+@has_permission_decorator('desativar_disciplina') 
 def desativar_disciplina(request, id):
     empresa = request.user.funcionario.empresa   
     disciplina = get_object_or_404(Disciplina, id=id, instituicao=empresa)
@@ -574,6 +600,7 @@ Function Based View para criar uma nova Sala de Aula na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('criar_sala_de_aula') 
 def criar_sala_de_aula(request):
     if request.method == 'POST':
         form = SalaDeAulaForm(request.POST, request.FILES)
@@ -593,6 +620,7 @@ Function Based View para listar as Salas de Aula na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('listar_salas_de_aula') 
 def listar_salas_de_aula(request):
     template_name = 'empresa/listar-salas-de-aula.html'
     empresa = request.user.funcionario.empresa
@@ -608,6 +636,7 @@ Function Based View para deletar Salas de Aula na minha empresa
 '''   
     
 @login_required
+@has_permission_decorator('deletar_sala_de_aula') 
 def deletar_sala_de_aula(request, id):
     empresa = request.user.funcionario.empresa
     sala_de_aula = get_object_or_404(SaladeAula, instituicao=empresa, id=id)
@@ -620,6 +649,7 @@ Function Based View para detalhar Salas de Aula na minha empresa
 '''   
 
 @login_required
+@has_permission_decorator('detalhar_sala_de_aula') 
 def detalhar_sala_de_aula(request, id):
     empresa = request.user.funcionario.empresa
     sala = get_object_or_404(SaladeAula, instituicao=empresa, id=id)
@@ -631,6 +661,7 @@ Function Based View para atualizar uma sala de aula na minha empresa
 '''   
 
 @login_required
+@has_permission_decorator('atualizar_sala_de_aula') 
 def atualizar_sala_de_aula(request, id):
     empresa = request.user.funcionario.empresa    
     sala = get_object_or_404(SaladeAula, instituicao=empresa, id=id)
@@ -653,7 +684,8 @@ def atualizar_sala_de_aula(request, id):
 Function Based View para marcar uma sala de aula como acessivel
 '''
 
-    
+@login_required
+@has_permission_decorator('marcar_sala_como_acessivel') 
 def marcar_sala_como_acessivel(request, id):
     empresa = request.user.funcionario.empresa   
     sala = get_object_or_404(SaladeAula, id=id, instituicao=empresa)
@@ -670,7 +702,9 @@ def marcar_sala_como_acessivel(request, id):
 '''
 Function Based View para marcar uma sala de aula como inacessivel
 '''
-    
+
+@login_required
+@has_permission_decorator('marcar_sala_como_inacessivel') 
 def marcar_sala_como_inacessivel(request, id):
     empresa = request.user.funcionario.empresa   
     sala = get_object_or_404(SaladeAula, id=id, instituicao=empresa)

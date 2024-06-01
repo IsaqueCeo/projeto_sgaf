@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'rest_framework',
+    'rolepermissions',
     'bootstrap5',
     'login',
     'core',
@@ -141,3 +142,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+ROLEPERMISSIONS_MODULE = 'sgaf.roles'

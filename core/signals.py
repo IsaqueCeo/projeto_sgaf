@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from .models import Empresa, Dadospessoais, Funcionario, Professor, Aluno
 import requests
 from django.contrib.auth.models import User
+from rolepermissions.roles import assign_role
 
 ### Preenchimento Automático de dados da Empresa por Viacep
 
@@ -131,6 +132,7 @@ def criar_usuario_funcionario(sender, instance, created, **kwargs):
             )
         funcionario.set_password(instance.cpf)
         funcionario.save()
+        assign_role(funcionario, 'funcionario')
         instance.usuario = funcionario
         instance.save()
         
@@ -172,6 +174,7 @@ def criar_usuario_professor(sender, instance, created, **kwargs):
             )
         usuario_professor.set_password(instance.cpf)
         usuario_professor.save()
+        assign_role(usuario_professor, 'professor')
         instance.usuario = usuario_professor
         instance.save()
 
@@ -215,5 +218,6 @@ def criar_usuario_aluno(sender, instance, created, **kwargs):
             )
         usuario_aluno.set_password(instance.cpf)
         usuario_aluno.save()
+        assign_role(usuario_aluno, 'aluno')
         instance.usuario = usuario_aluno
         instance.save()
