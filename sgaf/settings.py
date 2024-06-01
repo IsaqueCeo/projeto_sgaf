@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'financeiro',
     'portal_do_aluno',
+    'portal_do_professor',
     'gestao_escolar',
     'django_extensions',
 

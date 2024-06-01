@@ -24,6 +24,10 @@ class TurmaForm(forms.ModelForm):
             self.fields['alunos'].queryset = Aluno.objects.filter(instituicao=empresa)            
             self.fields['disciplinas'].queryset = Disciplina.objects.filter(instituicao=empresa)
             self.fields['sala_de_aula'].queryset = SaladeAula.objects.filter(instituicao=empresa)
+            
+            
+class NovaAulaForm(forms.ModelForm):
+    ...
 
 # class EmpresaFilteredModelChoiceField(ModelChoiceField):
 #     def get_queryset(self, request):

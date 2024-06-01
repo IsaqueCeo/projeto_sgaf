@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import SerieForm, TurmaForm
+from .forms import SerieForm, TurmaForm, NovaAulaForm
 from django.contrib import messages
-from .models import Serie, Turma
+from .models import Serie, Turma, Aula
 from rolepermissions.decorators  import has_permission_decorator
 # Create your views here.
 
@@ -182,3 +182,63 @@ def atualizar_turma(request, id):
         form = TurmaForm(instance=turma, empresa=request.user.funcionario.empresa)
     
     return render(request, template_name, {'form': form})
+
+
+'''
+VIEWS PARA AULA
+
+'''
+
+def cadastrar_nova_aula(request):
+    if request.method == 'POST':
+        form = NovaAulaForm(request.POST)
+        if form.is_valid():
+            aula = form.save(commit=False)
+            aula.instituicao = request.user.funcionario.empresa
+            aula.save()
+            messages.success(request, "Setor criado com sucesso!")
+            return redirect('dashboard')
+    else:
+        form = NovaAulaForm()
+    return render(request, 'empresa/nova-aula.html', {'form': form}) 
+
+
+def listar_todas_aulas(request):
+    template_name = 'empresa/listar-aulas.html'
+    instituicao = request.user.funcionario.empresa
+    aulas = Aula.objects.filter(instituicao=instituicao)
+    return render(request, template_name, {'aulas': aulas})
+
+    
+def detalhar_aula(request, id):
+    template_name = 'empresa/detalhar-aula.html'
+    instituicao = request.user.funcionario.empresa
+    aula = get_object_or_404(Aula, id=id, instituicao=instituicao)
+    return render(request, template_name, {'aula': aula})
+    
+    
+def atualizar_aula(request, id):    
+    instituicao = request.user.funcionario.empresa
+    aula = get_object_or_404(Aula, id=id, instituicao=instituicao)
+    template_name = 'empresa/atualizar_aula.html'
+    
+    if request.method == "POST":
+        form = NovaAulaForm(request.POST, instance=aula)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Aula atualizada com sucesso!')
+            return redirect('listar-aulas')
+    else:
+        form = NovaAulaForm(instance=aula)
+    
+    return render(request, template_name, {'form': form})
+
+
+
+def deletar_aula(request, id):
+    empresa = request.user.funcionario.empresa
+    aula = get_object_or_404(Aula, instituicao=empresa, id=id)
+    aula.delete()
+    messages.success(request, 'Aula deletada com sucesso!')
+    return redirect('listar-aulas')
+    
