@@ -63,7 +63,7 @@ class AlunoCompletoForm(forms.ModelForm):
 class DisciplinaForm(forms.ModelForm):
     class Meta:
         model = Disciplina
-        fields = ['nome', 'descricao', 'carga_horaria', 'professor', 'material_didatico', 'ementa', 'bibliografia_basica', 'bibliografia_complementar', 'ativo']
+        fields = ['nome', 'descricao', 'serie', 'carga_horaria', 'professor', 'material_didatico', 'ementa', 'bibliografia_basica', 'bibliografia_complementar', 'ativo']
         
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request', None)

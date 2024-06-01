@@ -53,7 +53,7 @@ class DadospessoaisAdmin(admin.ModelAdmin):
 
 @admin.register(Disciplina)
 class DisciplinaAdmin(admin.ModelAdmin):
-    list_display = ["id", "nome", "carga_horaria", "professor", "ativo"]
+    list_display = ["id", "nome", "carga_horaria", "professor", "ativo", "serie"]
     search_fields = ["nome", "carga_horaria"]
     list_editable = ["ativo"]
     list_display_links = ["id", "nome", "professor"]

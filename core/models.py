@@ -378,7 +378,7 @@ class Aluno(models.Model):
 	)
     
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)
-    usuario = models.OneToOneField(User, verbose_name="Usuario", on_delete=models.CASCADE, blank=True, null=True)
+    usuario = models.OneToOneField(User, verbose_name="Usuario", on_delete=models.CASCADE, blank=True, null=True, related_name="usuario")
     dados_pessoais = models.OneToOneField(Dadospessoais, verbose_name='Dados Pessoais', blank=True, null=True, on_delete=models.SET_NULL)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
@@ -446,8 +446,22 @@ class Aluno(models.Model):
 
 
 class Disciplina(models.Model):
+    
+    SERIE = (
+        ('F11', '1º Ano do Fundamental I'),
+        ('F12', '2º Ano do Fundamental I'),
+        ('F13', '3º Ano do Fundamental I'),
+        ('F14', '4º Ano do Fundamental I'),
+        ('F15', '5º Ano do Fundamental I'),
+        ('F26', '6º Ano do Fundamental II'),
+        ('F27', '7º Ano do Fundamental II'),
+        ('F28', '8º Ano do Fundamental II'),
+        ('F29', '9º Ano do Fundamental II'),
+    )    
+    
     instituicao = models.ForeignKey(Empresa, verbose_name='Instituição', on_delete=models.CASCADE, blank=True, null=True)
     nome = models.CharField("Nome da Disciplina", max_length=100)
+    serie = models.CharField("Série da Turma", choices=SERIE, max_length=3)
     descricao = models.TextField("Descrição da Disciplina", blank=True, null=True)
     carga_horaria = models.PositiveIntegerField("Carga Horária")
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="Professor Responsável", blank=True, null=True)
