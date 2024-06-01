@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import SerieForm, TurmaForm
 from django.contrib import messages
 from .models import Serie, Turma
+from rolepermissions.decorators  import has_permission_decorator
 # Create your views here.
 
 '''
@@ -16,6 +17,7 @@ Function Based View para criar uma nova serie na empresa
 
 
 @login_required
+@has_permission_decorator('cadastrar_nova_serie') 
 def cadastrar_nova_serie(request):
     if request.method == 'POST':
         form = SerieForm(request.POST)
@@ -37,6 +39,7 @@ Function Based View para listar todos os setores na minha empresa
 '''
 
 @login_required
+@has_permission_decorator('listar_series') 
 def listar_series(request):
     template_name = 'empresa/lista_de_series.html'
     empresa = request.user.funcionario.empresa
@@ -52,6 +55,7 @@ Function Based View para atualizar uma serie da minha empresa
 
 
 @login_required
+@has_permission_decorator('atualizar_serie') 
 def atualizar_serie(request, id):
     empresa = request.user.funcionario.empresa
     serie = get_object_or_404(Serie, id=id, instituicao=empresa)
@@ -74,6 +78,7 @@ Function Based View para detalhar uma serie da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('detalhar_serie') 
 def detalhar_serie(request, id):
     empresa = request.user.aluno.empresa
     serie = get_object_or_404(Serie, instituicao=empresa, id=id)
@@ -84,6 +89,7 @@ Function Based View para detalhar uma serie da minha empresa
 '''
 
 @login_required
+@has_permission_decorator('deletar_serie') 
 def deletar_serie(request, id):
     empresa = request.user.funcionario.empresa
     serie = get_object_or_404(Serie, instituicao=empresa, id=id)
@@ -92,7 +98,7 @@ def deletar_serie(request, id):
     return redirect('listar-series')
 
 '''
-VIEWS PARA SERIE
+VIEWS PARA TURMA
 
 '''
 

@@ -36,6 +36,15 @@ class Aluno(AbstractUserRole):
         'atualizar_sala_de_aula': False,
         'marcar_sala_como_acessivel': False,
         'marcar_sala_como_inacessivel': False,
+        'atualizar_dados_pessoais_aluno': True,
+        'listar_disciplinas_aluno': True,
+        'cadastrar_nova_serie': False,
+        'listar_series': False,
+        'atualizar_serie': False,
+        'detalhar_serie': False,
+        'deletar_serie': False,
+        'consultar_frequencia_escolar_do_aluno': True,
+        'consultar_minhas_notas_por_disciplina': True,
     }
     
 class Professor(AbstractUserRole):
@@ -74,6 +83,15 @@ class Professor(AbstractUserRole):
         'atualizar_sala_de_aula': False,
         'marcar_sala_como_acessivel': False,
         'marcar_sala_como_inacessivel': False,
+        'atualizar_dados_pessoais_aluno': False,
+        'listar_disciplinas_aluno': False,
+        'cadastrar_nova_serie': False,
+        'listar_series': False,
+        'atualizar_serie': False,
+        'detalhar_serie': False,
+        'deletar_serie': False,
+        'consultar_frequencia_escolar_do_aluno': False,
+        'consultar_minhas_notas_por_disciplina': False,
     }
     
 class Funcionario(AbstractUserRole):
@@ -112,4 +130,13 @@ class Funcionario(AbstractUserRole):
         'atualizar_sala_de_aula': True,
         'marcar_sala_como_acessivel': True,
         'marcar_sala_como_inacessivel': True,
+        'atualizar_dados_pessoais_aluno': False,
+        'listar_disciplinas_aluno': False,
+        'cadastrar_nova_serie': True,
+        'listar_series': True,
+        'atualizar_serie': True,
+        'detalhar_serie': True,
+        'deletar_serie': True,
+        'consultar_frequencia_escolar_do_aluno': False,
+        'consultar_minhas_notas_por_disciplina': False,
     }

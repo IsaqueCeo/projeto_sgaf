@@ -42,6 +42,7 @@ class FuncionarioCompletoForm(forms.ModelForm):
         model = Funcionario
         fields = '__all__'
 
+
 class DadosPessoaisForm(forms.ModelForm):
     class Meta:
         model = Dadospessoais

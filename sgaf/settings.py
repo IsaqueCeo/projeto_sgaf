@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core',
     'corsheaders',
     'financeiro',
+    'portal_do_aluno',
     'gestao_escolar'
 ]
 

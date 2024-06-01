@@ -1,11 +1,10 @@
-from .models import Setor, Professor, Funcionario, Empresa, Aluno, Disciplina, SaladeAula
-from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm, ProfessorCompletoForm, FuncionarioCompletoForm
+from .models import Setor, Professor, Funcionario, Empresa, Aluno, Disciplina, SaladeAula, Dadospessoais
+from .forms import NovoSetorForm, NovoProfessorForm, NovoFuncionario, EmpresaCompletaForm, AlunoForm, DadosPessoaisForm, ProfessorCompletoForm, FuncionarioCompletoForm
 from .forms import AlunoCompletoForm, DisciplinaForm, SalaDeAulaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .utils import is_superuser
-from rolepermissions.roles import AbstractUserRole
 from rolepermissions.decorators  import has_permission_decorator
 
 # Create your views here.
