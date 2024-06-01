@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from rolepermissions.decorators  import has_permission_decorator
 
 # def login(request):
 #     if request.method == 'POST':
@@ -24,38 +25,57 @@ def login_usuario(request):
             if user is not None and user.is_active:
                 login(request, user)
                 messages.info(request, 'Você fez login com sucesso!')
-                return redirect('geral:home')
+                
+                if hasattr(user, 'aluno'):
+                    return redirect('perfil_aluno')
+                elif hasattr(user, 'funcionario'):
+                    return redirect('dashboard_empresa')
+                elif hasattr(user, 'professor'):
+                    return redirect('perfil_professor')
+                else:
+                    messages.error(request, 'Usuário não possui um perfil associado.')
+                    return redirect('login')
+
             else:
                 messages.error(request, 'Matrícula ou senha inválidos!')
-                return redirect('usuarios:login')
-            
+                return redirect('login')
         else:
             messages.error(request, 'Formulário Inválido!')
-            return redirect('usuarios:login')
+            return redirect('login')
         
     form = LoginForm()
     context['form'] = form
     return render(request, template_name, context)
 
 @login_required
+@has_permission_decorator('sair') 
 def sair(request):
     logout(request)
     return redirect('usuarios:login')           
 
 
 @login_required
+@has_permission_decorator('alterar_senha') 
 def alterar_senha(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user) 
+            update_session_auth_hash(request, user)
             messages.success(request, 'Sua senha foi alterada com sucesso!')
-            return redirect('geral:home')
+            if hasattr(user, 'aluno'):
+                return redirect('perfil_aluno')
+            elif hasattr(user, 'funcionario'):
+                return redirect('dashboard_empresa')
+            elif hasattr(user, 'professor'):
+                return redirect('perfil_professor')
+            else:
+                messages.error(request, 'Usuário não possui um perfil associado.')
+                return redirect('login')
         else:
             messages.error(request, 'Por favor, corrija os erros abaixo.')
     else:
         form = PasswordChangeForm(request.user)
-    
+
     return render(request, 'usuarios/alterar_senha.html', {'form': form})
         

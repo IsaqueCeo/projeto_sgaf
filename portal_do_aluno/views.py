@@ -8,6 +8,10 @@ from django.contrib import messages
 
 # Create your views here.
 
+def perfil_aluno(request):
+    ...
+
+
 @login_required
 @has_permission_decorator('atualizar_dados_pessoais_aluno') 
 def atualizar_dados_pessoais_aluno(request, id):

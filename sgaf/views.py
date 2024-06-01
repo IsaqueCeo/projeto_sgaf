@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from core.forms import LandingPageEmpresaForm
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
+from rolepermissions.decorators  import has_permission_decorator
 
 
 def home(request):
@@ -17,6 +18,10 @@ def home(request):
     context = {'form': form}
     return render(request, template_name, context)
 
-
-
+@login_required
+@has_permission_decorator('dashboard') 
+def dashboard(request):
+    template_name = 'empresa/dashboard.html'
+    context = {}
+    return render(request, template_name, context)
     

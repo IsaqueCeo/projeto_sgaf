@@ -45,6 +45,9 @@ class Aluno(AbstractUserRole):
         'deletar_serie': False,
         'consultar_frequencia_escolar_do_aluno': True,
         'consultar_minhas_notas_por_disciplina': True,
+        'dashboard': False,
+        'alterar_senha': True,
+        'sair': True,
     }
     
 class Professor(AbstractUserRole):
@@ -92,6 +95,9 @@ class Professor(AbstractUserRole):
         'deletar_serie': False,
         'consultar_frequencia_escolar_do_aluno': False,
         'consultar_minhas_notas_por_disciplina': False,
+        'dashboard': False,
+        'alterar_senha': True,
+        'sair': True,
     }
     
 class Funcionario(AbstractUserRole):
@@ -139,4 +145,7 @@ class Funcionario(AbstractUserRole):
         'deletar_serie': True,
         'consultar_frequencia_escolar_do_aluno': False,
         'consultar_minhas_notas_por_disciplina': False,
+        'dashboard': True,
+        'alterar_senha': True,
+        'sair': True,
     }

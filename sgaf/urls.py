@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home
+from .views import home, dashboard
 from login.views import sair, login_usuario, alterar_senha
 
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path('escola/', include('gestao_escolar.urls')),
     path('aluno/', include('portal_do_aluno.urls')),
     path('login/', login_usuario, name='login'),
+    path('dashboard/', dashboard, name='dashboard_empresa'),
     path('logout/', sair, name='logout'),
     path('alterar_senha/', alterar_senha, name='alterar_senha'),
     path('admin/', admin.site.urls),
