@@ -6,7 +6,7 @@ from rolepermissions.decorators  import has_permission_decorator
 
 
 def home(request):
-    template_name = 'home.html'
+    template_name = 'index.html'
     if request.method == 'POST':
         form = LandingPageEmpresaForm(request.POST)
         if form.is_valid():

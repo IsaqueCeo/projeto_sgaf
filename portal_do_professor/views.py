@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from core.models import Dadospessoais, Professor, Disciplina
+from gestao_escolar.models import Aula
 from core.forms import DadosPessoaisForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -35,3 +36,11 @@ def listar_disciplinas_do_professor(request, id):
     disciplinas = Disciplina.objects.filter(professor=professor)
     template_name = 'professor/listar-disciplinas-do-professor.html'
     return render(request, template_name, {'disciplinas': disciplinas})
+
+
+def listar_aula_de_cada_disciplina(request, id):
+    ...
+
+
+def cadastrar_nova_aula(request, id):
+    ...
