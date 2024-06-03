@@ -48,6 +48,7 @@ class Aluno(AbstractUserRole):
         'dashboard': False,
         'alterar_senha': True,
         'sair': True,
+        'atualizar_dados_pessoais_professor': False,
     }
     
 class Professor(AbstractUserRole):
@@ -98,6 +99,7 @@ class Professor(AbstractUserRole):
         'dashboard': False,
         'alterar_senha': True,
         'sair': True,
+        'atualizar_dados_pessoais_professor': True,
     }
     
 class Funcionario(AbstractUserRole):
@@ -148,4 +150,5 @@ class Funcionario(AbstractUserRole):
         'dashboard': True,
         'alterar_senha': True,
         'sair': True,
+        'atualizar_dados_pessoais_professor': False,
     }
