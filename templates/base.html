@@ -58,7 +58,7 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
+    <div class="search-bar"> 
       <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
@@ -337,18 +337,6 @@
           </ul>
         </li>
       </ul>
-      
-      
-      
-
-
-
-
-
-
-
-
-
 
 
 
@@ -479,10 +467,15 @@
 
   </aside><!-- End Sidebar-->
 
-    {% block main %}
+  <div class="container" style="margin-top: 5rem">
 
-    {% endblock main%}
+ {% block main %}
 
+
+
+ {% endblock main%}
+
+  </div>
 
 
 <!-- ======= Footer ======= -->
@@ -514,6 +507,18 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.querySelector('.toggle-sidebar-btn');
+
+        if (toggleButton) {
+            toggleButton.addEventListener('click', function (e) {
+                document.body.classList.toggle('toggle-sidebar');
+            });
+        }
+    });
+</script>
 
 </body>
 
