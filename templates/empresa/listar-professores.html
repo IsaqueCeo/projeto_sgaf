@@ -1,11 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+
+{% extends "base.html" %}
+{% load static bootstrap5 %}
+
+
+{% block titulo %}
+Listar Professores | {{ block.super }}
+{% endblock titulo %}
+
+{% block main %}
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Matrícula</th>
+            <th scope="col">CPF</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for professor in professores %}
+        <tr>
+            <th scope="row">{{ professor.nome }}</th>
+            <td>{{ professor.matricula }}</td>
+            <td>{{ professor.cidade }}</td>
+            <td>{{ professor.telefone }}</td>
+            <td>{{ professor.email }}</td>      
+
+        </tr>
+
+        {% endfor %}
+    </tbody>
     
-</body>
-</html>
+</table>
+
+
+{% endblock main %}

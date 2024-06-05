@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from .utils import is_superuser
 from rolepermissions.decorators  import has_permission_decorator
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -132,8 +133,11 @@ Function Based View para listar todos os setores na minha empresa
 @has_permission_decorator('ver_setores')
 def listar_setores(request):
     template_name = 'empresa/setores.html'
-    empresa = request.user.funcionario.empresa
-    setores = Setor.objects.filter(empresa=empresa)       
+    try:
+        empresa = request.user.funcionario.empresa
+        setores = Setor.objects.filter(empresa=empresa)     
+    except ObjectDoesNotExist:
+        setores = Setor.objects.all()  
     context = {
         'setores': setores,
     }
@@ -221,11 +225,14 @@ Function Based View para listar todos os Professores na minha empresa
 
 
 @login_required
-@has_permission_decorator('listar_professores')
+# @has_permission_decorator('listar_professores')
 def listar_professores(request):
     template_name = 'empresa/listar-professores.html'
-    empresa = request.user.funcionario.empresa
-    professores = Professor.objects.filter(empresa=empresa)
+    try:
+        empresa = request.user.funcionario.empresa
+        professores = Professor.objects.filter(empresa=empresa)
+    except ObjectDoesNotExist:
+        professores = Professor.objects.all()
     context = {
         'professores': professores,
     }

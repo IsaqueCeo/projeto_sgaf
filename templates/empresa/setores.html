@@ -1,11 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+
+{% extends "base.html" %}
+{% load static bootstrap5 %}
+
+
+{% block titulo %}
+Listar Setores | {{ block.super }}
+{% endblock titulo %}
+
+{% block main %}
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Código</th>
+            <th scope="col">Observações</th>
+            {% if request.user.is_superuser %}
+            <th scope="col">Empresa</th>
+            {% endif %}
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for setor in setores %}
+        <tr>
+            <th scope="row">{{ setor.nome }}</th>
+            <td>{{ setor.telefone }}</td>
+            <td>{{ setor.codigo }}</td>
+            <td>{{ setor.observacoes }}</td>
+            {% if request.user.is_superuser %}
+            <td>{{ setor.empresa }}</td>
+            {% endif %}
+ 
+
+        </tr>
+
+        {% endfor %}
+    </tbody>
     
-</body>
-</html>
+</table>
+
+
+{% endblock main %}
