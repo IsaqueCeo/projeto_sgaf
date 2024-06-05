@@ -5,6 +5,7 @@ from core.forms import DadosPessoaisForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from rolepermissions.decorators  import has_permission_decorator
+from .forms import FrequenciaForms
 
 # Create your views here.
 
@@ -44,3 +45,19 @@ def listar_aula_de_cada_disciplina(request, id):
 
 def cadastrar_nova_aula(request, id):
     ...
+    
+    
+@login_required
+@has_permission_decorator('criar_frequencia_aluno')
+def criar_frequencia_aluno(request):
+    if request.method == 'POST':
+        form = FrequenciaForms(request.POST)
+        if form.is_valid():
+            frequencia = form.save(commit=False)
+            frequencia.instituicao = request.user.professor.instituicao
+            frequencia.save()
+            messages.success(request, 'Frequência criada com sucesso!')
+            return redirect('listar-frequencia')
+        else:
+            form = FrequenciaForms()
+        return render(request, 'professor/criar-frequencia-aluno.html', {'form':form})

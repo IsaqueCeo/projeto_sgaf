@@ -246,20 +246,20 @@ def deletar_aula(request, id):
 '''
 VIEWS PARA FREQUÊNCIA DE ALUNOS
 '''
-@login_required
-@has_permission_decorator('criar_frequencia_aluno')
-def criar_frequencia_aluno(request):
-    if request.method == 'POST':
-        form = FrequenciaForms(request.POST, empresa=request.user.aluno.empresa)
-        if form.is_valid():
-            frequencia = form.save(commit=False)
-            frequencia.instituicao = request.user.aluno.empresa
-            frequencia.save()
-            messages.success(request, 'Frequência criada com sucesso!')
-            return redirect('listar-frequencia')
-        else:
-            form = FrequenciaForms()
-        return render(request, 'frequencia-aluno.html', {'form':form})
+# @login_required
+# @has_permission_decorator('criar_frequencia_aluno')
+# def criar_frequencia_aluno(request):
+#     if request.method == 'POST':
+#         form = FrequenciaForms(request.POST, empresa=request.user.aluno.empresa)
+#         if form.is_valid():
+#             frequencia = form.save(commit=False)
+#             frequencia.instituicao = request.user.aluno.empresa
+#             frequencia.save()
+#             messages.success(request, 'Frequência criada com sucesso!')
+#             return redirect('listar-frequencia')
+#         else:
+#             form = FrequenciaForms()
+#         return render(request, 'professor/criar-frequencia-aluno.html', {'form':form})
     
 
 @login_required
