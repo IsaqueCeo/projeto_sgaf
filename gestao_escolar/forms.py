@@ -1,4 +1,4 @@
-from .models import Serie, Turma
+from .models import Serie, Turma, FrequenciaDoAluno
 from django import forms
 from core.models import Aluno, Disciplina, SaladeAula
 from django.forms import ModelChoiceField
@@ -24,6 +24,14 @@ class TurmaForm(forms.ModelForm):
             self.fields['alunos'].queryset = Aluno.objects.filter(instituicao=empresa)            
             self.fields['disciplinas'].queryset = Disciplina.objects.filter(instituicao=empresa)
             self.fields['sala_de_aula'].queryset = SaladeAula.objects.filter(instituicao=empresa)
+
+class FrequenciaForms(forms.ModelForm):
+    class Meta:
+        model = FrequenciaDoAluno
+        fields = ['aluno', 'aula', 'presenca']
+
+        def __init__(self):
+            return self.aluno
             
             
 class NovaAulaForm(forms.ModelForm):

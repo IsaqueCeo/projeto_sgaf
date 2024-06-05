@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import SerieForm, TurmaForm, NovaAulaForm
+from .forms import SerieForm, TurmaForm, NovaAulaForm, FrequenciaForms
 from django.contrib import messages
-from .models import Serie, Turma, Aula
+from .models import Serie, Turma, Aula, FrequenciaDoAluno
 from rolepermissions.decorators  import has_permission_decorator
 # Create your views here.
 
@@ -17,7 +17,7 @@ Function Based View para criar uma nova serie na empresa
 
 
 @login_required
-@has_permission_decorator('cadastrar_nova_serie') 
+@has_permission_decorator('cadastrar_nova_serie')
 def cadastrar_nova_serie(request):
     if request.method == 'POST':
         form = SerieForm(request.POST)
@@ -241,4 +241,68 @@ def deletar_aula(request, id):
     aula.delete()
     messages.success(request, 'Aula deletada com sucesso!')
     return redirect('listar-aulas')
+    
+
+'''
+VIEWS PARA FREQUÊNCIA DE ALUNOS
+'''
+@login_required
+@has_permission_decorator('criar_frequencia_aluno')
+def criar_frequencia_aluno(request):
+    if request.method == 'POST':
+        form = FrequenciaForms(request.POST, empresa=request.user.aluno.empresa)
+        if form.is_valid():
+            frequencia = form.save(commit=False)
+            frequencia.instituicao = request.user.aluno.empresa
+            frequencia.save()
+            messages.success(request, 'Frequência criada com sucesso!')
+            return redirect('listar-frequencia')
+        else:
+            form = FrequenciaForms()
+        return render(request, 'frequencia-aluno.html', {'form':form})
+    
+
+@login_required
+@has_permission_decorator('listar_frequencias')
+def listar_frequencias(request):
+    template_name = 'listar_frequencia.html'
+    empresa = request.user.aluno.empresa
+    frequencias = FrequenciaDoAluno.objects.filter(instituicao=empresa)
+    context = {
+        'frequencias':frequencias,
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+@has_permission_decorator('detalhar_frequencia')
+def detalhar_frequencia(request, id):
+    empresa = request.user.aluno.empresa
+    frequencia = get_object_or_404(FrequenciaDoAluno, instituicao=empresa, id=id)
+    return render(request, 'detalhar-frequencia', {'frequencia':frequencia})
+
+
+@login_required
+@has_permission_decorator('atualizar_frequencia')
+def atualizar_frequencia(request, id):
+    instituicao = request.user.aluno.empresa
+    aluno = get_object_or_404(FrequenciaDoAluno, id=id, instituicao=instituicao)
+    template_name = 'atualizar-frequencia.html'
+
+    if request.tmethod == 'POST':
+        form = FrequenciaForms(request.POST, instance=aluno)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Frequência atualizada com sucesso!')
+            return redirect('listar_frequencias')
+        else:
+            form = FrequenciaForms(instance=aluno)
+        return render(request, template_name, {'form':form})
+
+
+
+
+
+
+
     
