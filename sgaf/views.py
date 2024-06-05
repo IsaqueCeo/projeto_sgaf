@@ -24,4 +24,10 @@ def dashboard(request):
     template_name = 'empresa/dashboard.html'
     context = {}
     return render(request, template_name, context)
+
+
+def login_feito_com_sucessor(request):
+    template_name = 'sucesso.html'
+    context = {}
+    return render(request, template_name, context)
     

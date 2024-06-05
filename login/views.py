@@ -34,7 +34,7 @@ def login_usuario(request):
                     return redirect('perfil_professor')
                 else:
                     messages.error(request, 'Usuário não possui um perfil associado.')
-                    return redirect('login')
+                    return redirect('sucesso')
 
             else:
                 messages.error(request, 'Matrícula ou senha inválidos!')
