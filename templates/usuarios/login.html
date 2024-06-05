@@ -1,4 +1,4 @@
-{%load static bootstrap5 %}
+{% load static %}
 <!doctype html>
 <html lang="pt-br">
 
@@ -13,70 +13,49 @@
     <link href="{% static 'img/favicon.png' %}" rel="icon">
     <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
     <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-    <!-- <link rel="stylesheet" href="{% static 'vendor/fontawsome/fontawsom-all.min.css' %}"> -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles_login.css' %}" />
 
 </head>
 
 <body>
-    <div class="container-fluid ">
-
-        <div class=" no-pdding login-box">
+    <div class="container-fluid">
+        <div class="no-pdding login-box">
             <div class="row no-margin w-100 bklmj fundo">
                 <div class="col-lg-6 col-md-6 log-det">
-
                     <h2>Login</h2>
-
-<br>
-                    <!-- <div class="row no-margin past">
-                        <br>
-                    </div> -->
-
-
+                    <br>
                     <div class="text-box-cont">
-                        <div class="input-group mb-3">
-
-                            <input type="text" class="form-control" placeholder="Digite a sua matrícula" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-
-                            <input type="text" class="form-control" placeholder="Digite a sua Senha" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <div class="row no-margin">
-                            <p class="forget-p"></p>
-                        </div>
-                        <div class="row no-margin">
-                            <button class="btn btn-success btn-round">Entrar</button>
-                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                {{ form.usuario }}
+                            </div>
+                            <div class="input-group mb-3">
+                                {{ form.senha }}
+                            </div>
+                            <div class="row no-margin">
+                                <p class="forget-p"></p>
+                            </div>
+                            <div class="row no-margin">
+                                <button type="submit" class="btn btn-success btn-round">Entrar</button>
+                            </div>
+                        </form>
                         <br>
-
                     </div>
-
-
-
                 </div>
                 <div class="col-lg-6 col-md-6 box-de">
                     <div class="ditk-inf">
                         <h2 class="w-100">Bem-vindo</h2>
-                        <p>Acesse sua conta utilizando o número <br>
-                             de sua matrícula e sua senha</p>
-                        <!-- <button type="button" class="btn btn-outline-light">Sign in</button> -->
+                        <p>Acesse sua conta utilizando o número <br> de sua matrícula e sua senha</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
+    <script src="{% static 'vendor/bootstrap/js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
-
-
-<script src="{% static 'vendor/bootstrap/js/jquery-3.2.1.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/popper.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<!-- <script src="{% static 'vendor/bootstrap/js/script.js' %}"></script> -->
-
 
 </html>
