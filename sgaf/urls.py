@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home, dashboard
+from .views import home, dashboard, login_feito_com_sucessor
 from login.views import sair, login_usuario, alterar_senha
 
 urlpatterns = [
@@ -29,6 +29,7 @@ urlpatterns = [
     path('login/', login_usuario, name='login'),
     path('dashboard/', dashboard, name='dashboard_empresa'),
     path('logout/', sair, name='logout'),
+    path('login_feito_com_sucesso/', login_feito_com_sucessor, name='sucesso'),
     path('alterar_senha/', alterar_senha, name='alterar_senha'),
     path('admin/', admin.site.urls),
     path('', home, name='home'),

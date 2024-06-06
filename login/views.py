@@ -25,7 +25,7 @@ def login_usuario(request):
             if user is not None and user.is_active:
                 login(request, user)
                 messages.info(request, 'Você fez login com sucesso!')
-                
+
                 if hasattr(user, 'aluno'):
                     return redirect('perfil_aluno')
                 elif hasattr(user, 'funcionario'):
@@ -34,7 +34,7 @@ def login_usuario(request):
                     return redirect('perfil_professor')
                 else:
                     messages.error(request, 'Usuário não possui um perfil associado.')
-                    return redirect('login')
+                    return redirect('sucesso')
 
             else:
                 messages.error(request, 'Matrícula ou senha inválidos!')
@@ -42,7 +42,7 @@ def login_usuario(request):
         else:
             messages.error(request, 'Formulário Inválido!')
             return redirect('login')
-        
+
     form = LoginForm()
     context['form'] = form
     return render(request, template_name, context)

@@ -244,6 +244,7 @@ def deletar_aula(request, id):
 '''
 VIEWS PARA FREQUÊNCIA DE ALUNOS
 '''
+<<<<<<< HEAD
 @login_required
 @has_permission_decorator('criar_frequencia_aluno')
 def criar_frequencia_aluno(request):
@@ -258,7 +259,7 @@ def criar_frequencia_aluno(request):
     else:
         form = FrequenciaForms()
     return render(request, 'frequencia-aluno.html', {'form':form})
-    
+
 
 @login_required
 @has_permission_decorator('listar_frequencias')
