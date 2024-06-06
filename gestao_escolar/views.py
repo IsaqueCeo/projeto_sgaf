@@ -244,7 +244,7 @@ def deletar_aula(request, id):
 '''
 VIEWS PARA FREQUÊNCIA DE ALUNOS
 '''
-<<<<<<< HEAD
+
 @login_required
 @has_permission_decorator('criar_frequencia_aluno')
 def criar_frequencia_aluno(request):
