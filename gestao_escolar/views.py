@@ -69,7 +69,6 @@ def atualizar_serie(request, id):
             return redirect('listar-series') 
     else:
         form = SerieForm(instance=serie)
-    
     return render(request, template_name, {'form': form})
 
 
@@ -200,7 +199,7 @@ def cadastrar_nova_aula(request):
             return redirect('dashboard')
     else:
         form = NovaAulaForm()
-    return render(request, 'empresa/nova-aula.html', {'form': form}) 
+    return render(request, 'empresa/nova-aula.html', {'form': form})
 
 
 def listar_todas_aulas(request):
@@ -230,7 +229,6 @@ def atualizar_aula(request, id):
             return redirect('listar-aulas')
     else:
         form = NovaAulaForm(instance=aula)
-    
     return render(request, template_name, {'form': form})
 
 
@@ -250,24 +248,24 @@ VIEWS PARA FREQUÊNCIA DE ALUNOS
 @has_permission_decorator('criar_frequencia_aluno')
 def criar_frequencia_aluno(request):
     if request.method == 'POST':
-        form = FrequenciaForms(request.POST, empresa=request.user.aluno.empresa)
+        form = FrequenciaForms(request.POST, instituicao=request.user.aluno.instituicao)
         if form.is_valid():
             frequencia = form.save(commit=False)
-            frequencia.instituicao = request.user.aluno.empresa
+            frequencia.instituicao = request.user.aluno.instituicao
             frequencia.save()
             messages.success(request, 'Frequência criada com sucesso!')
             return redirect('listar-frequencia')
-        else:
-            form = FrequenciaForms()
-        return render(request, 'frequencia-aluno.html', {'form':form})
+    else:
+        form = FrequenciaForms()
+    return render(request, 'frequencia-aluno.html', {'form':form})
     
 
 @login_required
 @has_permission_decorator('listar_frequencias')
 def listar_frequencias(request):
-    template_name = 'listar_frequencia.html'
-    empresa = request.user.aluno.empresa
-    frequencias = FrequenciaDoAluno.objects.filter(instituicao=empresa)
+    template_name = 'listar-frequencia.html'
+    instituicao = request.user.aluno.instituicao
+    frequencias = FrequenciaDoAluno.objects.filter(instituicao=instituicao)
     context = {
         'frequencias':frequencias,
     }
@@ -277,27 +275,38 @@ def listar_frequencias(request):
 @login_required
 @has_permission_decorator('detalhar_frequencia')
 def detalhar_frequencia(request, id):
-    empresa = request.user.aluno.empresa
-    frequencia = get_object_or_404(FrequenciaDoAluno, instituicao=empresa, id=id)
-    return render(request, 'detalhar-frequencia', {'frequencia':frequencia})
+    instituicao = request.user.aluno.instituicao
+    frequencia = get_object_or_404(FrequenciaDoAluno, instituicao=instituicao, id=id)
+    return render(request, 'detalhar-frequencia.html', {'frequencia':frequencia})
 
 
 @login_required
 @has_permission_decorator('atualizar_frequencia')
 def atualizar_frequencia(request, id):
-    instituicao = request.user.aluno.empresa
-    aluno = get_object_or_404(FrequenciaDoAluno, id=id, instituicao=instituicao)
+    instituicao = request.user.aluno.instituicao
+    aluno = get_object_or_404(FrequenciaDoAluno, instituicao=instituicao, id=id)
     template_name = 'atualizar-frequencia.html'
 
-    if request.tmethod == 'POST':
+    if request.method == 'POST':
         form = FrequenciaForms(request.POST, instance=aluno)
         if form.is_valid():
             form.save()
             messages.success(request, 'Frequência atualizada com sucesso!')
-            return redirect('listar_frequencias')
+            return redirect('listar_frequencia')
         else:
             form = FrequenciaForms(instance=aluno)
         return render(request, template_name, {'form':form})
+
+
+@login_required
+@has_permission_decorator('deletar_frequencia')
+def deletar_frequencia(request, id):
+    instituicao = request.user.aluno.instituicao
+    frequencia = get_object_or_404(FrequenciaDoAluno, instituicao=instituicao, id=id)
+    frequencia.delete()
+    messages.success(request, 'Frequência deletada com sucesso!')
+    return redirect('listar-frequencia')    
+
 
 
 
