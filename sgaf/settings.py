@@ -93,8 +93,8 @@ DATABASES = {
         'NAME': 'academydb',
         'USER': 'academyuser',
         'PASSWORD': 'samuca10x',
-        'HOST': 'localhost',  # Ou o endereço do servidor MySQL, se não estiver na mesma máquina
-        'PORT': '3306',  # O porto padrão do MySQL é 3306
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
