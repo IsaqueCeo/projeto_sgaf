@@ -1,0 +1,75 @@
+###############################################################################
+# Replace
+# projeto_sgaf the name of the gunicorn file you want
+# root your user name
+# projeto_sgaf the folder name of your project
+# sgaf the folder name where you find a file called wsgi.py
+#
+###############################################################################
+# Criando o arquivo projeto_sgaf.socket
+sudo nano /etc/systemd/system/projeto_sgaf.socket
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=gunicorn projeto_sgaf socket
+
+[Socket]
+ListenStream=/run/projeto_sgaf.socket
+
+[Install]
+WantedBy=sockets.target
+
+###############################################################################
+# Criando o arquivo projeto_sgaf.service
+sudo nano /etc/systemd/system/projeto_sgaf.service
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=Gunicorn daemon (You can change if you want)
+Requires=projeto_sgaf.socket
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+Restart=on-failure
+# EnvironmentFile=/home/root/projeto_sgaf/.env
+WorkingDirectory=/home/root/projeto_sgaf
+# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
+# are all for debugging purposes.
+ExecStart=/home/root/projeto_sgaf/venv/bin/gunicorn \
+          --error-logfile /home/root/projeto_sgaf/gunicorn-error-log \
+          --enable-stdio-inheritance \
+          --log-level "debug" \
+          --capture-output \
+          --access-logfile - \
+          --workers 6 \
+          --bind unix:/run/projeto_sgaf.socket \
+          sgaf.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+###############################################################################
+# Ativando
+sudo systemctl start projeto_sgaf.socket
+sudo systemctl enable projeto_sgaf.socket
+
+# Checando
+sudo systemctl status projeto_sgaf.socket
+curl --unix-socket /run/projeto_sgaf.socket localhost
+sudo systemctl status projeto_sgaf
+
+# Restarting
+sudo systemctl restart projeto_sgaf.service
+sudo systemctl restart projeto_sgaf.socket
+sudo systemctl restart projeto_sgaf
+
+# After changing something
+sudo systemctl daemon-reload
+
+# Debugging
+sudo journalctl -u projeto_sgaf.service
+sudo journalctl -u projeto_sgaf.socket
