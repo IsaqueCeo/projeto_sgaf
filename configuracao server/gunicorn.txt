@@ -27,7 +27,7 @@ sudo nano /etc/systemd/system/projeto_sgaf.service
 ###############################################################################
 # Conteúdo do arquivo
 [Unit]
-Description=Gunicorn daemon (You can change if you want)
+Description=Gunicorn daemon projeto_sgaf
 Requires=projeto_sgaf.socket
 After=network.target
 
@@ -37,8 +37,6 @@ Group=www-data
 Restart=on-failure
 # EnvironmentFile=/home/root/projeto_sgaf/.env
 WorkingDirectory=/home/root/projeto_sgaf
-# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
-# are all for debugging purposes.
 ExecStart=/home/root/projeto_sgaf/venv/bin/gunicorn \
           --error-logfile /home/root/projeto_sgaf/gunicorn-error-log \
           --enable-stdio-inheritance \
